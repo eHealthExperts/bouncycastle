@@ -120,7 +120,17 @@ public class TlsDHUtils
     }
 
     public static TlsDHConfig receiveDHConfig(TlsContext context, TlsDHGroupVerifier dhGroupVerifier,
-        InputStream input) throws IOException
+                                              InputStream input) throws IOException
+    {
+        TlsDHConfig dhConfig = readDHConfig(context, input);
+        if (!dhGroupVerifier.accept(getDHGroup(dhConfig)))
+        {
+            throw new TlsFatalAlert(AlertDescription.insufficient_security);
+        }
+        return dhConfig;
+    }
+
+    public static TlsDHConfig readDHConfig(TlsContext context, InputStream input) throws IOException
     {
         BigInteger p = readDHParameter(input);
         BigInteger g = readDHParameter(input);
@@ -134,10 +144,6 @@ public class TlsDHUtils
                 dhGroup = new DHGroup(p, null, g, 0);
             }
 
-            if (!dhGroupVerifier.accept(dhGroup))
-            {
-                throw new TlsFatalAlert(AlertDescription.insufficient_security);
-            }
             return new TlsDHConfig(dhGroup);
         }
 

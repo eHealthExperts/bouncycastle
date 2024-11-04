@@ -2,6 +2,7 @@ package org.bouncycastle.tls.crypto;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Vector;
 
@@ -219,6 +220,18 @@ public interface TlsCrypto
      * @return a TlsECDomain supporting the parameters in ecConfig.
      */
     TlsECDomain createECDomain(TlsECConfig ecConfig);
+
+    /**
+     * Create an dhConfig object for the selected CipherSuite and the clientSupportedGroups.
+     *
+     * @param selectedCipherSuite
+     *            the selected CipherSuite to use.
+     * @param clientSupportedGroups
+     *            the clientSupportedGroups may be null.
+     *
+     * @return a TlsDHConfig supporting the parameters or null.
+     */
+    TlsDHConfig createDHConfig(int selectedCipherSuite, int[] clientSupportedGroups);
 
     /**
      * Create a domain object supporting the domain parameters described in kemConfig.
