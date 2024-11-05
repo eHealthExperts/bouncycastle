@@ -4191,11 +4191,17 @@ public class TlsUtils
     public static SignatureAndHashAlgorithm chooseSignatureAndHashAlgorithm(TlsContext context, Vector sigHashAlgs,
         short signatureAlgorithm) throws IOException
     {
-        return chooseSignatureAndHashAlgorithm(context.getServerVersion(), sigHashAlgs, signatureAlgorithm);
+        return chooseSignatureAndHashAlgorithm(context.getServerVersion(), sigHashAlgs, signatureAlgorithm, context.getCrypto());
     }
 
     public static SignatureAndHashAlgorithm chooseSignatureAndHashAlgorithm(ProtocolVersion negotiatedVersion,
-        Vector sigHashAlgs, short signatureAlgorithm) throws IOException
+                                                                            Vector sigHashAlgs, short signatureAlgorithm) throws IOException
+    {
+        return chooseSignatureAndHashAlgorithm(negotiatedVersion, sigHashAlgs, signatureAlgorithm, null);
+    }
+
+    public static SignatureAndHashAlgorithm chooseSignatureAndHashAlgorithm(ProtocolVersion negotiatedVersion,
+        Vector sigHashAlgs, short signatureAlgorithm, TlsCrypto crypto) throws IOException
     {
         if (!isTLSv12(negotiatedVersion))
         {
@@ -4212,13 +4218,11 @@ public class TlsUtils
             sigHashAlgs = getDefaultSignatureAlgorithms(signatureAlgorithm);
         }
 
-        TlsCrypto crypto = context.getCrypto();
-
         SignatureAndHashAlgorithm result = null;
         for (int i = 0; i < sigHashAlgs.size(); ++i)
         {
             SignatureAndHashAlgorithm sigHashAlg = (SignatureAndHashAlgorithm)sigHashAlgs.elementAt(i);
-            if (sigHashAlg.getSignature() == signatureAlgorithm  && crypto.hasSignatureAndHashAlgorithm(sigHashAlg))
+            if (sigHashAlg.getSignature() == signatureAlgorithm  && (crypto == null || crypto.hasSignatureAndHashAlgorithm(sigHashAlg)))
             {
                 short hash = sigHashAlg.getHash();
                 if (hash < MINIMUM_HASH_STRICT)
