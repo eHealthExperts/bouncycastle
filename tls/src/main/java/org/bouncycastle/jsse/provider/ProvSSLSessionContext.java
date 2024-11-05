@@ -63,12 +63,16 @@ class ProvSSLSessionContext
     {
         processQueue();
 
+        removeAllExpiredSessions();
+
         return accessSession(mapGet(sessionsByID, makeSessionID(sessionID)));
     }
 
     synchronized ProvSSLSession getSessionImpl(String hostName, int port)
     {
         processQueue();
+
+        removeAllExpiredSessions();
 
         SessionEntry sessionEntry = mapGet(sessionsByPeer, makePeerKey(hostName, port));
         ProvSSLSession session = accessSession(sessionEntry);
