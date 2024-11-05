@@ -1209,7 +1209,7 @@ public class TlsUtils
         case SignatureAlgorithm.dsa:
         case SignatureAlgorithm.ecdsa:
         case SignatureAlgorithm.rsa:
-            return SignatureAndHashAlgorithm.getInstance(HashAlgorithm.sha1, signatureAlgorithm);
+            return SignatureAndHashAlgorithm.getInstance(HashAlgorithm.sha256, signatureAlgorithm);
         default:
             return null;
         }
@@ -4212,11 +4212,13 @@ public class TlsUtils
             sigHashAlgs = getDefaultSignatureAlgorithms(signatureAlgorithm);
         }
 
+        TlsCrypto crypto = context.getCrypto();
+
         SignatureAndHashAlgorithm result = null;
         for (int i = 0; i < sigHashAlgs.size(); ++i)
         {
             SignatureAndHashAlgorithm sigHashAlg = (SignatureAndHashAlgorithm)sigHashAlgs.elementAt(i);
-            if (sigHashAlg.getSignature() == signatureAlgorithm)
+            if (sigHashAlg.getSignature() == signatureAlgorithm  && crypto.hasSignatureAndHashAlgorithm(sigHashAlg))
             {
                 short hash = sigHashAlg.getHash();
                 if (hash < MINIMUM_HASH_STRICT)
