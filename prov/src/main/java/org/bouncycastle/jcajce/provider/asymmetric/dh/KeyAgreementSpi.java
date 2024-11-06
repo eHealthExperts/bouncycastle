@@ -32,6 +32,8 @@ import org.bouncycastle.crypto.params.DHPublicKeyParameters;
 import org.bouncycastle.crypto.params.DHUPrivateParameters;
 import org.bouncycastle.crypto.params.DHUPublicParameters;
 import org.bouncycastle.crypto.util.DigestFactory;
+import org.bouncycastle.crypto.util.EraseUtil;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.provider.asymmetric.util.BaseAgreementSpi;
 import org.bouncycastle.jcajce.spec.DHDomainParameterSpec;
 import org.bouncycastle.jcajce.spec.DHUParameterSpec;
@@ -223,7 +225,14 @@ public class KeyAgreementSpi
         // for JSSE compatibility
         if (algorithm.equals("TlsPremasterSecret"))
         {
-            return new SecretKeySpec(trimZeroes(result), algorithm);
+            final byte[] trimedZeroes = trimZeroes(result);
+            final DestroyableSecretKeySpec secretKeySpec = new DestroyableSecretKeySpec(trimedZeroes, algorithm);
+
+            EraseUtil.clearByteArray(result);
+            EraseUtil.clearByteArray(trimedZeroes);
+            EraseUtil.clearBigInteger(this.x);
+
+            return secretKeySpec;
         }
 
         return super.engineGenerateSecret(algorithm);

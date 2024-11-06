@@ -1,6 +1,7 @@
 package org.bouncycastle.tls.crypto.impl;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.bouncycastle.tls.AlertDescription;
 import org.bouncycastle.tls.ContentType;
@@ -124,6 +125,8 @@ public final class TlsBlockCipher
             serverCipher.init(key_block, offset, serverIVLength);
             offset += serverIVLength;
         }
+
+        Arrays.fill(key_block, (byte) 0x0);
 
         if (offset != key_block_size)
         {
