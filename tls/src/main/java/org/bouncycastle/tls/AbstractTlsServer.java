@@ -219,7 +219,7 @@ public abstract class AbstractTlsServer
         for (int i = 0; i < clientSupportedGroups.length; ++i)
         {
             int namedGroup = clientSupportedGroups[i];
-            if (NamedGroup.getCurveBits(namedGroup) >= minimumCurveBits)
+            if (NamedGroup.getCurveBits(namedGroup) >= minimumCurveBits  && getCrypto().hasNamedGroup(namedGroup))
             {
                 // This default server implementation supports all NamedGroup curves
                 return namedGroup;
@@ -740,6 +740,13 @@ public abstract class AbstractTlsServer
 
     public TlsDHConfig getDHConfig() throws IOException
     {
+        int[] clientSupportedGroups = context.getSecurityParametersHandshake().getClientSupportedGroups();
+        final TlsDHConfig defaultCryptoDHConfig = this.context.getCrypto().createDHConfig(this.selectedCipherSuite, clientSupportedGroups);
+        if (defaultCryptoDHConfig != null)
+        {
+            return defaultCryptoDHConfig;
+        }
+
         int minimumFiniteFieldBits = TlsDHUtils.getMinimumFiniteFieldBits(selectedCipherSuite);
         int namedGroup = selectDH(minimumFiniteFieldBits);
         return TlsDHUtils.createNamedDHConfig(context, namedGroup);
