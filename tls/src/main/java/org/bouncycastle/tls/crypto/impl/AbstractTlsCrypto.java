@@ -54,13 +54,4 @@ public abstract class AbstractTlsCrypto
      * @throws java.io.IOException
      */
     public abstract TlsCipher createCipher(TlsCryptoParameters cryptoParams, int encryptionAlgorithm, int macAlgorithm) throws IOException;
-
-    /**
-     * Return an encryptor based on the public key in certificate.
-     *
-     * @param certificate
-     *            the certificate carrying the public key.
-     * @return a TlsEncryptor based on the certificate's public key.
-     */
-    protected abstract TlsEncryptor createEncryptor(TlsCertificate certificate) throws IOException;
 }
