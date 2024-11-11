@@ -4195,7 +4195,7 @@ public class TlsUtils
     }
 
     public static SignatureAndHashAlgorithm chooseSignatureAndHashAlgorithm(ProtocolVersion negotiatedVersion,
-                                                                            Vector sigHashAlgs, short signatureAlgorithm) throws IOException
+        Vector sigHashAlgs, short signatureAlgorithm) throws IOException
     {
         return chooseSignatureAndHashAlgorithm(negotiatedVersion, sigHashAlgs, signatureAlgorithm, null);
     }
