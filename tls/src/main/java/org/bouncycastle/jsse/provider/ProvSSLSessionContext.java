@@ -2,14 +2,8 @@ package org.bouncycastle.jsse.provider;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSession;
@@ -274,13 +268,20 @@ class ProvSSLSessionContext
         long creationTimeLimit = getCreationTimeLimit(System.currentTimeMillis());
 
         Iterator<SessionEntry> iter = sessionsByID.values().iterator();
-        while (iter.hasNext())
-        {
-            SessionEntry sessionEntry = iter.next();
-            if (invalidateIfCreatedBefore(sessionEntry, creationTimeLimit))
+        Set<SessionID> keySet = new HashSet<>(sessionsByID.keySet());
+        for (SessionID sessionID : keySet) {
+            try {
+                SessionEntry sessionEntry = sessionsByID.get(sessionID);
+                if(sessionEntry != null) {
+                    if (invalidateIfCreatedBefore(sessionEntry, creationTimeLimit))
+                    {
+                        removeSession(sessionEntry);
+                    }
+                }
+            }
+            catch (Exception e)
             {
-                iter.remove();
-                removeSessionByPeer(sessionEntry);
+                LOG.log(Level.WARNING, "Could not remove Session " + sessionID, e);
             }
         }
     }
