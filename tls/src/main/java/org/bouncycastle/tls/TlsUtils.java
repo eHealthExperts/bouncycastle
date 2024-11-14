@@ -4859,14 +4859,18 @@ public class TlsUtils
 
         Certificate serverCertificate = securityParameters.getPeerCertificate();
 
+        if (serverCertificate.isEmpty())
+        {
+            throw new TlsFatalAlert(AlertDescription.bad_certificate);
+        }
+        clientAuthentication.notifyServerCertificate(new TlsServerCertificateImpl(serverCertificate, serverCertificateStatus));
+
         checkTlsFeatures(serverCertificate, clientExtensions, serverExtensions);
 
         if (!isTLSv13)
         {
             keyExchange.processServerCertificate(serverCertificate);
         }
-
-        clientAuthentication.notifyServerCertificate(new TlsServerCertificateImpl(serverCertificate, serverCertificateStatus));
     }
 
     static SignatureAndHashAlgorithm getCertSigAndHashAlg(TlsCertificate subjectCert, TlsCertificate issuerCert)
