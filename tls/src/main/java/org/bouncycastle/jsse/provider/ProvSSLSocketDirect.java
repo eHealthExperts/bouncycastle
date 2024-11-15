@@ -353,6 +353,14 @@ class ProvSSLSocketDirect
         sslParameters.setNeedClientAuth(need);
     }
 
+    @Override
+    public synchronized void setSoTimeout(int timeout) throws SocketException {
+        if(protocol != null) {
+            protocol.setSoTimeout(timeout);
+        }
+        super.setSoTimeout(timeout);
+    }
+
     public synchronized void setParameters(BCSSLParameters parameters)
     {
         SSLParametersUtil.setParameters(this.sslParameters, parameters);
@@ -418,6 +426,7 @@ class ProvSSLSocketDirect
                 TlsClientProtocol clientProtocol = new ProvTlsClientProtocol(input, output, socketCloser);
                 clientProtocol.setResumableHandshake(resumable);
                 this.protocol = clientProtocol;
+                this.protocol.setSoTimeout(getSoTimeout());
 
                 ProvTlsClient client = new ProvTlsClient(this, sslParameters);
                 this.protocolPeer = client;
@@ -429,7 +438,8 @@ class ProvSSLSocketDirect
                 TlsServerProtocol serverProtocol = new ProvTlsServerProtocol(input, output, socketCloser);
                 serverProtocol.setResumableHandshake(resumable);
                 this.protocol = serverProtocol;
-
+                this.protocol.setSoTimeout(getSoTimeout());
+                
                 ProvTlsServer server = new ProvTlsServer(this, sslParameters);
                 this.protocolPeer = server;
 

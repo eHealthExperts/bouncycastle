@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -152,6 +153,8 @@ public abstract class TlsProtocol
     private volatile boolean keyUpdatePendingSend = false;
     private volatile boolean resumableHandshake = false;
     private volatile int appDataSplitMode = ADS_MODE_1_Nsub1;
+
+    private boolean ignoreSocketTimeout = false;
 
     protected TlsSession tlsSession = null;
     protected SessionParameters sessionParameters = null;
@@ -310,6 +313,10 @@ public abstract class TlsProtocol
     {
         if ((appDataReady || isResumableHandshake()) && (e instanceof InterruptedIOException))
         {
+            return;
+        }
+
+        if(ignoreSocketTimeout && e instanceof SocketTimeoutException) {
             return;
         }
 
@@ -1087,6 +1094,8 @@ public abstract class TlsProtocol
         }
         this.appDataSplitMode = appDataSplitMode;
     }
+
+    public void setSoTimeout(int timeout) { this.ignoreSocketTimeout = timeout == 0; }
 
     public boolean isResumableHandshake()
     {
