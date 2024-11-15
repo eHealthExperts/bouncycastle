@@ -154,7 +154,7 @@ public abstract class TlsProtocol
     private volatile boolean resumableHandshake = false;
     private volatile int appDataSplitMode = ADS_MODE_1_Nsub1;
 
-    private int soTimeout = -1;
+    private boolean ignoreSocketTimeout = false;
 
     protected TlsSession tlsSession = null;
     protected SessionParameters sessionParameters = null;
@@ -316,7 +316,7 @@ public abstract class TlsProtocol
             return;
         }
 
-        if(soTimeout == 0 && e instanceof SocketTimeoutException) {
+        if(ignoreSocketTimeout && e instanceof SocketTimeoutException) {
             return;
         }
 
@@ -1095,7 +1095,7 @@ public abstract class TlsProtocol
         this.appDataSplitMode = appDataSplitMode;
     }
 
-    public void setSoTimeout(int timeout) { this.soTimeout = timeout; }
+    public void setSoTimeout(int timeout) { this.ignoreSocketTimeout = timeout == 0; }
 
     public boolean isResumableHandshake()
     {
