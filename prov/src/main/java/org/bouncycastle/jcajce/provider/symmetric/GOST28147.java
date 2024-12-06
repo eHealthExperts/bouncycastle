@@ -37,6 +37,7 @@ import org.bouncycastle.jcajce.provider.symmetric.util.BaseWrapCipher;
 import org.bouncycastle.jcajce.provider.util.AlgorithmProvider;
 import org.bouncycastle.jcajce.spec.GOST28147ParameterSpec;
 import org.bouncycastle.util.Strings;
+import org.bouncycastle.util.Arrays;
 
 public final class GOST28147
 {
@@ -378,7 +379,7 @@ public final class GOST28147
 
             if (asn1Params instanceof ASN1OctetString)
             {
-                this.iv = ASN1OctetString.getInstance(asn1Params).getOctets();
+                this.iv = Arrays.clone(ASN1OctetString.getInstance(asn1Params).getOctets());
             }
             else if (asn1Params instanceof ASN1Sequence)
             {

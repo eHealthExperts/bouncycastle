@@ -11,6 +11,8 @@ import org.bouncycastle.tls.crypto.TlsDecodeResult;
 import org.bouncycastle.tls.crypto.TlsEncodeResult;
 import org.bouncycastle.tls.crypto.TlsNullNullCipher;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * An implementation of the TLS 1.0/1.1/1.2 record layer.
  */
@@ -344,6 +346,41 @@ class RecordStream
             {
                 // TODO[tls] Available from JDK 7
 //                io.addSuppressed(e);
+            }
+        }
+
+        if(pendingCipher != null)
+        {
+            try
+            {
+                pendingCipher.destroy();
+            }
+            catch (DestroyFailedException e)
+            {
+                // ignore
+            }
+        }
+        if(writeCipher != null)
+        {
+            try
+            {
+                writeCipher.destroy();
+            }
+            catch (DestroyFailedException e)
+            {
+                // ignore
+            }
+        }
+
+        if(readCipher != null)
+        {
+            try
+            {
+                readCipher.destroy();
+            }
+            catch (DestroyFailedException e)
+            {
+                // ignore
             }
         }
 

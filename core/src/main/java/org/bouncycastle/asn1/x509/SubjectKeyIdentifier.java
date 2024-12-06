@@ -54,7 +54,7 @@ public class SubjectKeyIdentifier
     protected SubjectKeyIdentifier(
         ASN1OctetString keyid)
     {
-        this(keyid.getOctets());
+        this(Arrays.clone(keyid.getOctets()));
     }
 
     public byte[] getKeyIdentifier()

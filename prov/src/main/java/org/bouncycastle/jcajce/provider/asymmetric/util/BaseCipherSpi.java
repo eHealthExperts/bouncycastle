@@ -26,6 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.crypto.Wrapper;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.util.BCJcaJceHelper;
 import org.bouncycastle.jcajce.util.JcaJceHelper;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -171,7 +172,7 @@ public abstract class BaseCipherSpi
 
         if (wrappedKeyType == Cipher.SECRET_KEY)
         {
-            return new SecretKeySpec(encoded, wrappedKeyAlgorithm);
+            return new DestroyableSecretKeySpec(encoded, wrappedKeyAlgorithm);
         }
         else if (wrappedKeyAlgorithm.equals("") && wrappedKeyType == Cipher.PRIVATE_KEY)
         {

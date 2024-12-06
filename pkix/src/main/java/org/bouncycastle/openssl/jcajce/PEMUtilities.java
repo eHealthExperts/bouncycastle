@@ -24,6 +24,7 @@ import org.bouncycastle.asn1.cryptopro.CryptoProObjectIdentifiers;
 import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.util.JcaJceHelper;
 import org.bouncycastle.openssl.EncryptionException;
 import org.bouncycastle.openssl.PEMException;
@@ -146,7 +147,7 @@ class PEMUtilities
                             
         SecretKey sKey = keyGen.generateSecret(new PBEKeySpec(password, salt, iterationCount, PEMUtilities.getKeySize(algorithm)));
 
-        return new SecretKeySpec(sKey.getEncoded(), getAlgorithmName(algorithm));
+        return new DestroyableSecretKeySpec(sKey.getEncoded(), getAlgorithmName(algorithm));
     }
 
     public static SecretKey generateSecretKeyForPKCS5Scheme2(JcaJceHelper helper, String algorithm, char[] password, byte[] salt, int iterationCount, AlgorithmIdentifier prf)
@@ -162,7 +163,7 @@ class PEMUtilities
 
         SecretKey sKey = keyGen.generateSecret(new PBEKeySpec(password, salt, iterationCount, PEMUtilities.getKeySize(algorithm)));
 
-        return new SecretKeySpec(sKey.getEncoded(), algorithm);
+        return new DestroyableSecretKeySpec(sKey.getEncoded(), algorithm);
     }
 
 
@@ -334,7 +335,7 @@ class PEMUtilities
                 System.arraycopy(key, 0, key, 16, 8);
             }
 
-            return new SecretKeySpec(key, algorithm);
+            return new DestroyableSecretKeySpec(key, algorithm);
         }
         catch (GeneralSecurityException e)
         {

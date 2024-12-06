@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.crypto.generators.OpenSSLPBEParametersGenerator;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.provider.config.ConfigurableProvider;
 import org.bouncycastle.jcajce.provider.symmetric.util.BaseSecretKeyFactory;
 import org.bouncycastle.jcajce.provider.util.AlgorithmProvider;
@@ -62,7 +63,7 @@ public final class OpenSSLPBKDF
 
                 pGen.init(Strings.toUTF8ByteArray(pbeSpec.getPassword()), pbeSpec.getSalt());
 
-                return new SecretKeySpec(((KeyParameter)pGen.generateDerivedParameters(pbeSpec.getKeyLength())).getKey(), "OpenSSLPBKDF");
+                return new DestroyableSecretKeySpec(((KeyParameter)pGen.generateDerivedParameters(pbeSpec.getKeyLength())).getKey(), "OpenSSLPBKDF");
             }
 
             throw new InvalidKeySpecException("Invalid KeySpec");

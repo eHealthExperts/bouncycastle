@@ -53,6 +53,7 @@ import org.bouncycastle.cms.PasswordRecipient;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.generators.HKDFBytesGenerator;
 import org.bouncycastle.crypto.params.HKDFParameters;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.operator.AsymmetricKeyUnwrapper;
 import org.bouncycastle.operator.DefaultSecretKeySizeProvider;
 import org.bouncycastle.operator.GenericKey;
@@ -191,7 +192,7 @@ public class EnvelopedDataHelper
 
         if (key.getRepresentation() instanceof byte[])
         {
-            return new SecretKeySpec((byte[])key.getRepresentation(), "ENC");
+            return new DestroyableSecretKeySpec((byte[])key.getRepresentation(), "ENC");
         }
 
         throw new IllegalArgumentException("unknown generic key type");
@@ -206,7 +207,7 @@ public class EnvelopedDataHelper
 
         if (key.getRepresentation() instanceof byte[])
         {
-            return new SecretKeySpec((byte[])key.getRepresentation(), getBaseCipherName(algorithm));
+            return new DestroyableSecretKeySpec((byte[])key.getRepresentation(), getBaseCipherName(algorithm));
         }
 
         throw new IllegalArgumentException("unknown generic key type");
@@ -244,7 +245,7 @@ public class EnvelopedDataHelper
 
             kdf.generateBytes(keyData, 0, keyData.length);
 
-            return new SecretKeySpec(keyData, getBaseCipherName(encAlgId.getAlgorithm()));
+            return new DestroyableSecretKeySpec(keyData, getBaseCipherName(encAlgId.getAlgorithm()));
         }
         else
         {

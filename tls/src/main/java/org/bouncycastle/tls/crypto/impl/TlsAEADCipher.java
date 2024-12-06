@@ -415,4 +415,17 @@ public final class TlsAEADCipher
             throw new TlsFatalAlert(AlertDescription.internal_error);
         }
     }
+
+    public void destroy() throws javax.security.auth.DestroyFailedException
+    {
+        if(decryptCipher != null)
+        {
+            decryptCipher.destroy();
+        }
+
+        if(encryptCipher != null)
+        {
+            encryptCipher.destroy();
+        }
+    }
 }

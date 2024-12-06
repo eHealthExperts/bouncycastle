@@ -7,6 +7,7 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.util.Arrays;
 
 /**
  * an object for the elements in the X.509 V3 extension block.
@@ -239,7 +240,7 @@ public class X509Extension
     {
         try
         {
-            return ASN1Primitive.fromByteArray(ext.getValue().getOctets());
+            return ASN1Primitive.fromByteArray(Arrays.clone(ext.getValue().getOctets()));
         }
         catch (IOException e)
         {

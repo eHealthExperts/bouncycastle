@@ -1,6 +1,9 @@
 package org.bouncycastle.crypto.engines;
 
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * Serpent is a 128-bit 32-round block cipher with variable key lengths,
@@ -298,5 +301,9 @@ public final class SerpentEngine
         Pack.intToLittleEndian(X[1] ^ wKey[1], output, outOff + 4);
         Pack.intToLittleEndian(X[2] ^ wKey[2], output, outOff + 8);
         Pack.intToLittleEndian(X[3] ^ wKey[3], output, outOff + 12);
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearIntArray(wKey);
     }
 }

@@ -16,7 +16,7 @@ public class ASN1Integer
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets());
+            return createPrimitive(Arrays.clone(octetString.getOctets()));
         }
     };
 

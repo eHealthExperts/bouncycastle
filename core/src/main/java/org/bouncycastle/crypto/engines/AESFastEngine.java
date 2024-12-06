@@ -7,7 +7,10 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * an implementation of the AES (Rijndael), from FIPS-197.
@@ -1014,5 +1017,15 @@ public class AESFastEngine
             return 256;
         }
         return (WorkingKey.length - 7) << 5;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(WorkingKey != null)
+        {
+            for (int[] t : WorkingKey) {
+                EraseUtil.clearIntArray(t);
+            }
+        }
     }
 }

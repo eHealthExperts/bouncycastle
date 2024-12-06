@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * An XTEA engine.
@@ -188,5 +191,10 @@ public class XTEAEngine
         out[outOff++] = (byte)(v >>> 16);
         out[outOff++] = (byte)(v >>>  8);
         out[outOff  ] = (byte)v;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(_S);
     }
 }

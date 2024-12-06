@@ -65,9 +65,9 @@ public class OtherHash
     {
         if (null == this.otherHash)
         {
-            return this.sha1Hash.getOctets();
+            return Arrays.clone(this.sha1Hash.getOctets());
         }
-        return this.otherHash.getHashValue().getOctets();
+        return Arrays.clone(this.otherHash.getHashValue().getOctets());
     }
 
     public ASN1Primitive toASN1Primitive()

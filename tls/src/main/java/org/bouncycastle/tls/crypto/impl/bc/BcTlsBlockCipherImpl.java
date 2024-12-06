@@ -45,4 +45,12 @@ final class BcTlsBlockCipherImpl
     {
         return cipher.getBlockSize();
     }
+
+    public void destroy() throws javax.security.auth.DestroyFailedException
+    {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
+    }
 }

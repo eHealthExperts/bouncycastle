@@ -66,7 +66,7 @@ public class CMSAuthEnvelopedData
         final EncryptedContentInfo authEncInfo = authEnvData.getAuthEncryptedContentInfo();
         this.authEncAlg = authEncInfo.getContentEncryptionAlgorithm();
 
-        this.mac = authEnvData.getMac().getOctets();
+        this.mac = Arrays.clone(authEnvData.getMac().getOctets());
 
         CMSSecureReadable secureReadable = new CMSSecureReadableWithAAD()
         {
@@ -102,7 +102,7 @@ public class CMSAuthEnvelopedData
                 {
                     aadStream.write(authAttrs.getEncoded(ASN1Encoding.DER));
                 }
-                return new InputStreamWithMAC(new ByteArrayInputStream(authEncInfo.getEncryptedContent().getOctets()), mac);
+                return new InputStreamWithMAC(new ByteArrayInputStream(Arrays.clone(authEncInfo.getEncryptedContent().getOctets())), mac);
             }
 
             @Override

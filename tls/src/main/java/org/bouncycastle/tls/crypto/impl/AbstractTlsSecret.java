@@ -2,6 +2,7 @@ package org.bouncycastle.tls.crypto.impl;
 
 import java.io.IOException;
 
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.tls.crypto.TlsEncryptor;
 import org.bouncycastle.tls.crypto.TlsHMAC;
 import org.bouncycastle.tls.crypto.TlsSecret;
@@ -54,8 +55,7 @@ public abstract class AbstractTlsSecret
     {
         if (data != null)
         {
-            // TODO Is there a way to ensure the data is really overwritten?
-            Arrays.fill(data, (byte)0);
+            EraseUtil.clearByteArray(data);
             this.data = null;
         }
     }
@@ -84,5 +84,12 @@ public abstract class AbstractTlsSecret
     synchronized byte[] copyData()
     {
         return Arrays.clone(data);
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        EraseUtil.clearByteArray(data);
     }
 }

@@ -32,6 +32,7 @@ class ProvSSLSessionContext
             if (shouldRemove)
             {
                 removeSessionByPeer(eldest.getValue());
+                eldest.getValue().get().invalidate();
             }
             return shouldRemove;
         }
@@ -87,7 +88,7 @@ class ProvSSLSessionContext
     synchronized void removeSession(byte[] sessionID)
     {
         SessionEntry sessionEntry = mapRemove(sessionsByID, makeSessionID(sessionID));
-        if (null != sessionEntry)
+        if (null != sessionEntry && sessionEntry.get() != null)
         {
             removeSessionByPeer(sessionEntry);
         }
@@ -98,8 +99,9 @@ class ProvSSLSessionContext
     {
         processQueue();
 
-        if (!addToCache)
+        if (!addToCache || sessionCacheSize > 0)
         {
+            tlsSession.invalidate();
             return new ProvSSLSession(this, peerHost, peerPort, tlsSession, jsseSessionParameters);
         }
 

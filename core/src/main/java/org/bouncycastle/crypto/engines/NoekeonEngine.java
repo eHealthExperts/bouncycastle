@@ -7,8 +7,11 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * A Noekeon engine, using direct-key mode.
@@ -266,5 +269,10 @@ public class NoekeonEngine
         Pack.intToBigEndian(a3, out, outOff + 12);
 
         return SIZE;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(k);
     }
 }

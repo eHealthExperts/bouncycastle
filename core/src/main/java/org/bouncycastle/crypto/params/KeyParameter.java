@@ -1,10 +1,14 @@
 package org.bouncycastle.crypto.params;
 
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
+
 public class KeyParameter
-    implements CipherParameters
+    implements CipherParameters, Destroyable
 {
     private byte[]  key;
 
@@ -52,5 +56,16 @@ public class KeyParameter
         KeyParameter reversed = new KeyParameter(key.length);
         Arrays.reverse(this.key, reversed.key);
         return reversed;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearByteArray(key);
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        EraseUtil.clearByteArray(key);
     }
 }

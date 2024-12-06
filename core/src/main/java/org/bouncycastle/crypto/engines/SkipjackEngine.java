@@ -8,6 +8,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * a class that provides a basic SKIPJACK engine.
@@ -276,5 +279,12 @@ public class SkipjackEngine
         }
 
         return encrypting ? CryptoServicePurpose.ENCRYPTION : CryptoServicePurpose.DECRYPTION;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearIntArray(key0);
+        EraseUtil.clearIntArray(key1);
+        EraseUtil.clearIntArray(key2);
+        EraseUtil.clearIntArray(key3);
     }
 }

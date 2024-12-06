@@ -8,6 +8,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * A class that provides CAST key encryption operations,
@@ -844,5 +847,10 @@ public class CAST5Engine
             return CryptoServicePurpose.ANY;
         }
         return _encrypting ? CryptoServicePurpose.ENCRYPTION : CryptoServicePurpose.DECRYPTION;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearByteArray(_workingKey);
     }
 }

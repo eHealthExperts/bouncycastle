@@ -228,7 +228,7 @@ public class CMSAuthenticatedDataParser
         if (mac == null)
         {
             getAuthAttrs();
-            mac = authData.getMac().getOctets();
+            mac = Arrays.clone(authData.getMac().getOctets());
         }
         return Arrays.clone(mac);
     }
@@ -301,7 +301,7 @@ public class CMSAuthenticatedDataParser
     {
         if (authAttrs != null)
         {
-            return ASN1OctetString.getInstance(authAttrs.get(CMSAttributes.messageDigest).getAttrValues().getObjectAt(0)).getOctets();
+            return Arrays.clone(ASN1OctetString.getInstance(authAttrs.get(CMSAttributes.messageDigest).getAttrValues().getObjectAt(0)).getOctets());
         }
 
         return null;

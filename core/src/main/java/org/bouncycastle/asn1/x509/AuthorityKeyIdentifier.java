@@ -171,7 +171,7 @@ public class AuthorityKeyIdentifier
     {
         if (keyidentifier != null)
         {
-            return keyidentifier.getOctets();
+            return Arrays.clone(keyidentifier.getOctets());
         }
 
         return null;

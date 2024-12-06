@@ -73,7 +73,7 @@ public class ResponderID
         if (this.value instanceof ASN1OctetString)
         {
             ASN1OctetString octetString = (ASN1OctetString)this.value;
-            return octetString.getOctets();
+            return Arrays.clone(octetString.getOctets());
         }
 
         return null;

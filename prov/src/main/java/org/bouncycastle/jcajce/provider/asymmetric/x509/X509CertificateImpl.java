@@ -198,7 +198,7 @@ abstract class X509CertificateImpl
 
     public byte[] getSignature()
     {
-        return c.getSignature().getOctets();
+        return Arrays.clone(c.getSignature().getOctets());
     }
 
     /**
@@ -495,7 +495,7 @@ abstract class X509CertificateImpl
 
                 if (ext.getExtnValue() != null)
                 {
-                    byte[]                  octs = ext.getExtnValue().getOctets();
+                    byte[]                  octs = Arrays.clone(ext.getExtnValue().getOctets());
                     ASN1InputStream         dIn = new ASN1InputStream(octs);
                     buf.append("                       critical(").append(ext.isCritical()).append(") ");
                     try
@@ -630,7 +630,7 @@ abstract class X509CertificateImpl
         {
             List<PublicKey> pubKeys = ((CompositePublicKey)key).getPublicKeys();
             ASN1Sequence keySeq = ASN1Sequence.getInstance(c.getSignatureAlgorithm().getParameters());
-            ASN1Sequence sigSeq = ASN1Sequence.getInstance(c.getSignature().getOctets());
+            ASN1Sequence sigSeq = ASN1Sequence.getInstance(Arrays.clone(c.getSignature().getOctets()));
 
             boolean success = false;
             for (int i = 0; i != pubKeys.size(); i++)
@@ -651,7 +651,7 @@ abstract class X509CertificateImpl
                     checkSignature(
                         (PublicKey)pubKeys.get(i), signature,
                         sigAlg.getParameters(),
-                        ASN1BitString.getInstance(sigSeq.getObjectAt(i)).getOctets());
+                            Arrays.clone(ASN1BitString.getInstance(sigSeq.getObjectAt(i)).getOctets()));
                     success = true;
                 }
                 catch (SignatureException e)
@@ -673,7 +673,7 @@ abstract class X509CertificateImpl
         else if (X509SignatureUtil.isCompositeAlgorithm(c.getSignatureAlgorithm()))
         {
             ASN1Sequence keySeq = ASN1Sequence.getInstance(c.getSignatureAlgorithm().getParameters());
-            ASN1Sequence sigSeq = ASN1Sequence.getInstance(c.getSignature().getOctets());
+            ASN1Sequence sigSeq = ASN1Sequence.getInstance(Arrays.clone(c.getSignature().getOctets()));
 
             boolean success = false;
             for (int i = 0; i != sigSeq.size(); i++)
@@ -690,7 +690,7 @@ abstract class X509CertificateImpl
                     checkSignature(
                         key, signature,
                         sigAlg.getParameters(),
-                        ASN1BitString.getInstance(sigSeq.getObjectAt(i)).getOctets());
+                        Arrays.clone(ASN1BitString.getInstance(sigSeq.getObjectAt(i)).getOctets()));
 
                     success = true;
                 }
@@ -820,7 +820,7 @@ abstract class X509CertificateImpl
                     list.add(ASN1ObjectIdentifier.getInstance(genName.getName()).getId());
                     break;
                 case GeneralName.iPAddress:
-                    byte[] addrBytes = DEROctetString.getInstance(genName.getName()).getOctets();
+                    byte[] addrBytes = Arrays.clone(DEROctetString.getInstance(genName.getName()).getOctets());
                     final String addr;
                     try
                     {
@@ -855,7 +855,7 @@ abstract class X509CertificateImpl
         ASN1OctetString extValue = getExtensionValue(c, oid);
         if (null != extValue)
         {
-            return extValue.getOctets();
+            return Arrays.clone(extValue.getOctets());
         }
         return null;
     }

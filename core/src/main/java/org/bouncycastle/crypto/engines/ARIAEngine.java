@@ -7,8 +7,11 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Bytes;
 import org.bouncycastle.util.encoders.Hex;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * RFC 5794.
@@ -436,5 +439,15 @@ public class ARIAEngine
                 : 192)
             : 128;
 
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(roundKeys != null)
+        {
+            for (byte[] t : roundKeys) {
+                EraseUtil.clearByteArray(t);
+            }
+        }
     }
 }

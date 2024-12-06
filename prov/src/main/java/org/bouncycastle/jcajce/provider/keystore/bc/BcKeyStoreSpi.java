@@ -48,6 +48,7 @@ import org.bouncycastle.crypto.io.MacOutputStream;
 import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.jcajce.io.CipherInputStream;
 import org.bouncycastle.jcajce.io.CipherOutputStream;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.util.BCJcaJceHelper;
 import org.bouncycastle.jcajce.util.JcaJceHelper;
 import org.bouncycastle.jce.interfaces.BCKeyStore;
@@ -435,7 +436,7 @@ public class BcKeyStoreSpi
         }
         else if (format.equals("RAW"))
         {
-            return new SecretKeySpec(enc, algorithm);
+            return new DestroyableSecretKeySpec(enc, algorithm);
         }
         else
         {

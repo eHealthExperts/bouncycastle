@@ -16,6 +16,7 @@ import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.BigIntegers;
 
 /**
@@ -136,7 +137,7 @@ public class ECPrivateKey
     {
         ASN1OctetString octs = (ASN1OctetString)seq.getObjectAt(1);
 
-        return new BigInteger(1, octs.getOctets());
+        return new BigInteger(1, Arrays.clone(octs.getOctets()));
     }
     
     public ASN1BitString getPublicKey()

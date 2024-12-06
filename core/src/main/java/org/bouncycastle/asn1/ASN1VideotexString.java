@@ -13,7 +13,7 @@ public abstract class ASN1VideotexString
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets());
+            return createPrimitive(Arrays.clone(octetString.getOctets()));
         }
     };
 

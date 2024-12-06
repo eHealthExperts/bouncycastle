@@ -20,7 +20,7 @@ public abstract class ASN1BMPString
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets());
+            return createPrimitive(Arrays.clone(octetString.getOctets()));
         }
     };
 

@@ -41,6 +41,7 @@ import org.bouncycastle.asn1.rosstandart.RosstandartObjectIdentifiers;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.spec.GOST28147WrapParameterSpec;
 import org.bouncycastle.jcajce.spec.UserKeyingMaterialSpec;
 import org.bouncycastle.jcajce.util.DefaultJcaJceHelper;
@@ -220,7 +221,7 @@ public class JceAsymmetricKeyWrapper
 
                 keyCipher.init(Cipher.WRAP_MODE, key, new GOST28147WrapParameterSpec(transParams.getEncryptionParamSet(), transParams.getUkm()));
 
-                byte[] keyData = keyCipher.wrap(new SecretKeySpec(encKey, "GOST"));
+                byte[] keyData = keyCipher.wrap(new DestroyableSecretKeySpec(encKey, "GOST"));
 
                 GostR3410KeyTransport transport = new GostR3410KeyTransport(
                                 new Gost2814789EncryptedKey(

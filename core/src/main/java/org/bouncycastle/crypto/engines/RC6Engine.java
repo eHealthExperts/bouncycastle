@@ -3,6 +3,9 @@ package org.bouncycastle.crypto.engines;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * An RC6 engine.
@@ -360,5 +363,9 @@ public class RC6Engine
             dst[i + dstOff] = (byte)word;
             word >>>= 8;
         }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearIntArray(_S);
     }
 }

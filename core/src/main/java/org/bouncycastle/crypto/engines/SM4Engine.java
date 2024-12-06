@@ -7,7 +7,10 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * SM4 Block Cipher - SM4 is a 128 bit block cipher with a 128 bit key.
@@ -250,5 +253,10 @@ public class SM4Engine
 
     public void reset()
     {
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(rk);
     }
 }

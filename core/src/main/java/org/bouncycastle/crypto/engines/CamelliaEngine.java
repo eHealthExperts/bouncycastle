@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * Camellia - based on RFC 3713.
@@ -692,5 +695,10 @@ public class CamelliaEngine
     private int bitsOfSecurity()
     {
         return _keySize * 8;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(subkey);
     }
 }

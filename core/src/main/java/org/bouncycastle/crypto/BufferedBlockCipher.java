@@ -1,6 +1,9 @@
 package org.bouncycastle.crypto;
 
 
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
+
 /**
  * A wrapper class that allows block ciphers to be used to process data in
  * a piecemeal fashion. The BufferedBlockCipher outputs a block only when the
@@ -9,7 +12,7 @@ package org.bouncycastle.crypto;
  * Note: in the case where the underlying cipher is either a CFB cipher or an
  * OFB one the last block may not be a multiple of the block size.
  */
-public class BufferedBlockCipher
+public class BufferedBlockCipher implements Destroyable
 {
     protected byte[]        buf;
     protected int           bufOff;
@@ -350,5 +353,13 @@ public class BufferedBlockCipher
         // reset the underlying cipher.
         //
         cipher.reset();
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
     }
 }

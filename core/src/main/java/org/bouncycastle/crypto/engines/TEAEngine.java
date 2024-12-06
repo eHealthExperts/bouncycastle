@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * An TEA engine.
@@ -185,5 +188,12 @@ public class TEAEngine
         out[outOff++] = (byte)(v >>> 16);
         out[outOff++] = (byte)(v >>>  8);
         out[outOff  ] = (byte)v;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        _a = 0;
+        _b = 0;
+        _c = 0;
+        _d = 0;
     }
 }

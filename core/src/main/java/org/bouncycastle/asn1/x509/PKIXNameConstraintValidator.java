@@ -79,7 +79,7 @@ public class PKIXNameConstraintValidator
             checkPermittedURI(permittedSubtreesURI, extractNameAsString(name));
             break;
         case GeneralName.iPAddress:
-            checkPermittedIP(permittedSubtreesIP, ASN1OctetString.getInstance(name.getName()).getOctets());
+            checkPermittedIP(permittedSubtreesIP, Arrays.clone(ASN1OctetString.getInstance(name.getName()).getOctets()));
             break;
         default:
             // other tags to be ignored.
@@ -114,7 +114,7 @@ public class PKIXNameConstraintValidator
             checkExcludedURI(excludedSubtreesURI, extractNameAsString(name));
             break;
         case GeneralName.iPAddress:
-            checkExcludedIP(excludedSubtreesIP, ASN1OctetString.getInstance(name.getName()).getOctets());
+            checkExcludedIP(excludedSubtreesIP, Arrays.clone(ASN1OctetString.getInstance(name.getName()).getOctets()));
             break;
         default:
             // other tags to be ignored.
@@ -246,7 +246,7 @@ public class PKIXNameConstraintValidator
             break;
         case GeneralName.iPAddress:
             excludedSubtreesIP = unionIP(excludedSubtreesIP,
-                ASN1OctetString.getInstance(base.getName()).getOctets());
+                Arrays.clone(ASN1OctetString.getInstance(base.getName()).getOctets()));
             break;
         default:
             throw new IllegalStateException("Unknown tag encountered: " + base.getTagNo());
@@ -615,8 +615,8 @@ public class PKIXNameConstraintValidator
         Set intersect = new HashSet();
         for (Iterator it = ips.iterator(); it.hasNext();)
         {
-            byte[] ip = ASN1OctetString.getInstance(
-                ((GeneralSubtree)it.next()).getBase().getName()).getOctets();
+            byte[] ip = Arrays.clone(ASN1OctetString.getInstance(
+                ((GeneralSubtree)it.next()).getBase().getName()).getOctets());
             if (permitted == null)
             {
                 if (ip != null)

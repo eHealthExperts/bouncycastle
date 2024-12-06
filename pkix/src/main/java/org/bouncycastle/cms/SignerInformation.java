@@ -73,7 +73,7 @@ public class SignerInformation
         {
             ASN1OctetString octs = ASN1OctetString.getInstance(s.getId());
 
-            sid = new SignerId(octs.getOctets());
+            sid = new SignerId(Arrays.clone(octs.getOctets()));
         }
         else
         {
@@ -86,7 +86,7 @@ public class SignerInformation
         this.signedAttributeSet = info.getAuthenticatedAttributes();
         this.unsignedAttributeSet = info.getUnauthenticatedAttributes();
         this.encryptionAlgorithm = info.getDigestEncryptionAlgorithm();
-        this.signature = info.getEncryptedDigest().getOctets();
+        this.signature = Arrays.clone(info.getEncryptedDigest().getOctets());
 
         this.content = content;
         this.resultDigest = resultDigest;
@@ -122,7 +122,7 @@ public class SignerInformation
         this.signedAttributeSet = info.getAuthenticatedAttributes();
         this.unsignedAttributeSet = info.getUnauthenticatedAttributes();
         this.encryptionAlgorithm = info.getDigestEncryptionAlgorithm();
-        this.signature = info.getEncryptedDigest().getOctets();
+        this.signature = Arrays.clone(info.getEncryptedDigest().getOctets());
         this.content = baseInfo.content;
         this.resultDigest = baseInfo.resultDigest;
         this.signedAttributeValues = getSignedAttributes();
@@ -532,7 +532,7 @@ public class SignerInformation
 
             ASN1OctetString signedMessageDigest = (ASN1OctetString)validMessageDigest;
 
-            if (!Arrays.constantTimeAreEqual(resultDigest, signedMessageDigest.getOctets()))
+            if (!Arrays.constantTimeAreEqual(resultDigest, Arrays.clone(signedMessageDigest.getOctets())))
             {
                 throw new CMSSignerDigestMismatchException("message-digest attribute value does not match calculated value");
             }

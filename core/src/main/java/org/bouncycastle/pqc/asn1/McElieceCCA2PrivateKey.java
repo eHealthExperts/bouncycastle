@@ -12,6 +12,7 @@ import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.pqc.legacy.math.linearalgebra.GF2mField;
 import org.bouncycastle.pqc.legacy.math.linearalgebra.Permutation;
 import org.bouncycastle.pqc.legacy.math.linearalgebra.PolynomialGF2mSmallM;
+import org.bouncycastle.util.Arrays;
 
 /**
  * Return the keyData to encode in the PrivateKeyInfo structure.
@@ -56,11 +57,11 @@ public class McElieceCCA2PrivateKey
 
         k = ((ASN1Integer)seq.getObjectAt(1)).intValueExact();
 
-        encField = ((ASN1OctetString)seq.getObjectAt(2)).getOctets();
+        encField = Arrays.clone(((ASN1OctetString)seq.getObjectAt(2)).getOctets());
 
-        encGp = ((ASN1OctetString)seq.getObjectAt(3)).getOctets();
+        encGp = Arrays.clone(((ASN1OctetString)seq.getObjectAt(3)).getOctets());
 
-        encP = ((ASN1OctetString)seq.getObjectAt(4)).getOctets();
+        encP = Arrays.clone(((ASN1OctetString)seq.getObjectAt(4)).getOctets());
 
         digest = AlgorithmIdentifier.getInstance(seq.getObjectAt(5));
     }

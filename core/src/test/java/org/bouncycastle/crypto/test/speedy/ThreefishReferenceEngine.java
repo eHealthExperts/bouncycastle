@@ -6,6 +6,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.TweakableBlockCipherParameters;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 public class ThreefishReferenceEngine
     implements BlockCipher
@@ -393,4 +396,7 @@ public class ThreefishReferenceEngine
     {
     }
 
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearLongArray(kw);
+    }
 }

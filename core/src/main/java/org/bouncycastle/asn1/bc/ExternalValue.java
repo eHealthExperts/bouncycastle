@@ -50,7 +50,7 @@ public class ExternalValue
             }
             else
             {
-                hashValue = ASN1OctetString.getInstance(seq.getObjectAt(2)).getOctets();
+                hashValue = Arrays.clone(ASN1OctetString.getInstance(seq.getObjectAt(2)).getOctets());
             }
         }
         else

@@ -92,6 +92,7 @@ import org.bouncycastle.internal.asn1.oiw.OIWObjectIdentifiers;
 import org.bouncycastle.jcajce.BCFKSLoadStoreParameter;
 import org.bouncycastle.jcajce.BCFKSStoreParameter;
 import org.bouncycastle.jcajce.BCLoadStoreParameter;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.provider.keystore.util.AdaptingKeyStoreSpi;
 import org.bouncycastle.jcajce.provider.keystore.util.ParameterUtil;
 import org.bouncycastle.jcajce.util.BCJcaJceHelper;
@@ -219,7 +220,7 @@ class BcFKSKeyStoreSpi
                     SecretKeyData keyData = SecretKeyData.getInstance(decryptData("SECRET_KEY_ENCRYPTION", encKeyData.getKeyEncryptionAlgorithm(), password, encKeyData.getEncryptedKeyData()));
                     SecretKeyFactory kFact = helper.createSecretKeyFactory(keyData.getKeyAlgorithm().getId());
 
-                    return kFact.generateSecret(new SecretKeySpec(keyData.getKeyBytes(), keyData.getKeyAlgorithm().getId()));
+                    return kFact.generateSecret(new DestroyableSecretKeySpec(keyData.getKeyBytes(), keyData.getKeyAlgorithm().getId()));
                 }
                 catch (Exception e)
                 {
@@ -480,7 +481,7 @@ class BcFKSKeyStoreSpi
     {
         Cipher c = helper.createCipher(algorithm);
 
-        c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyBytes, "AES"));
+        c.init(Cipher.ENCRYPT_MODE, new DestroyableSecretKeySpec(keyBytes, "AES"));
 
         return c;
     }
@@ -818,7 +819,7 @@ class BcFKSKeyStoreSpi
         try
         {
             // no default key size for MAC.
-            mac.init(new SecretKeySpec(generateKey(pbkdAlgorithm, "INTEGRITY_CHECK", ((password != null) ? password : new char[0]), -1), algorithmId));
+            mac.init(new DestroyableSecretKeySpec(generateKey(pbkdAlgorithm, "INTEGRITY_CHECK", ((password != null) ? password : new char[0]), -1), algorithmId));
         }
         catch (InvalidKeyException e)
         {
@@ -1344,7 +1345,7 @@ class BcFKSKeyStoreSpi
 
             byte[] keyBytes = generateKey(pbes2Parameters.getKeyDerivationFunc(), purpose, ((password != null) ? password : new char[0]), 32);
 
-            c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyBytes, "AES"), algParams);
+            c.init(Cipher.DECRYPT_MODE, new DestroyableSecretKeySpec(keyBytes, "AES"), algParams);
 
             byte[] rv = c.doFinal(encryptedData);
             return rv;

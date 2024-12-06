@@ -5,7 +5,9 @@ import java.security.MessageDigest;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.security.auth.DestroyFailedException;
 
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.tls.PRFAlgorithm;
 import org.bouncycastle.tls.TlsUtils;
 import org.bouncycastle.tls.crypto.CryptoHashAlgorithm;
@@ -112,7 +114,8 @@ public class JceTlsSecret
         {
             String algorithm = crypto.getHMACAlgorithmName(cryptoHashAlgorithm);
             Mac hmac = crypto.getHelper().createMac(algorithm);
-            hmac.init(new SecretKeySpec(prk, 0, prk.length, algorithm));
+            DestroyableSecretKeySpec secretKey = new DestroyableSecretKeySpec(prk, 0, prk.length, algorithm);
+            hmac.init(secretKey);
 
             byte[] okm = new byte[length];
 
@@ -137,7 +140,11 @@ public class JceTlsSecret
                 pos += hashLen;
                 hmac.update(t, 0, t.length);
             }
-
+            try {
+                secretKey.destroy();
+            } catch (DestroyFailedException e) {
+                // TODO: Logging
+            }
             return crypto.adoptLocalSecret(okm);
         }
         catch (GeneralSecurityException e)
@@ -157,11 +164,18 @@ public class JceTlsSecret
         {
             String algorithm = crypto.getHMACAlgorithmName(cryptoHashAlgorithm);
             Mac hmac = crypto.getHelper().createMac(algorithm);
-            hmac.init(new SecretKeySpec(salt, 0, salt.length, algorithm));
+            DestroyableSecretKeySpec secretKey = new DestroyableSecretKeySpec(salt, 0, salt.length, algorithm);
+            hmac.init(secretKey);
 
             convert(crypto, ikm).updateMac(hmac);
 
             byte[] prk = hmac.doFinal();
+
+            try {
+                secretKey.destroy();
+            } catch (DestroyFailedException e) {
+                // TODO: Logging
+            }
 
             return crypto.adoptLocalSecret(prk);
         }

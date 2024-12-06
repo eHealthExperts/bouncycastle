@@ -82,7 +82,7 @@ public class ExtensionsGenerator
             if (dupsAllowed.contains(oid))
             {
                 Extension existingExtension = (Extension)extensions.get(oid);
-                ASN1Sequence seq1 = ASN1Sequence.getInstance(DEROctetString.getInstance(existingExtension.getExtnValue()).getOctets());
+                ASN1Sequence seq1 = ASN1Sequence.getInstance(Arrays.clone(DEROctetString.getInstance(existingExtension.getExtnValue()).getOctets()));
                 ASN1Sequence seq2 = ASN1Sequence.getInstance(value);
 
                 ASN1EncodableVector items = new ASN1EncodableVector(seq1.size() + seq2.size());
@@ -255,7 +255,7 @@ public class ExtensionsGenerator
         {
             ASN1ObjectIdentifier ident = oids[i];
             Extension ext = extensions.getExtension(ident);
-            addExtension(ASN1ObjectIdentifier.getInstance(ident), ext.isCritical(), ext.getExtnValue().getOctets());
+            addExtension(ASN1ObjectIdentifier.getInstance(ident), ext.isCritical(), Arrays.clone(ext.getExtnValue().getOctets()));
         }
     }
 }

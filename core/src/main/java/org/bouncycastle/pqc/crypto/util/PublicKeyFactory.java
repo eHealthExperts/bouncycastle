@@ -392,7 +392,7 @@ public class PublicKeyFactory
             }
             else
             {
-                byte[] keyEnc = ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets();
+                byte[] keyEnc = Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets());
 
                 return new XMSSPublicKeyParameters
                     .Builder(XMSSParameters.lookupByOID(Pack.bigEndianToInt(keyEnc, 0)))
@@ -422,7 +422,7 @@ public class PublicKeyFactory
             }
             else
             {
-                byte[] keyEnc = ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets();
+                byte[] keyEnc = Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets());
 
                 return new XMSSMTPublicKeyParameters
                     .Builder(XMSSMTParameters.lookupByOID(Pack.bigEndianToInt(keyEnc, 0)))
@@ -437,7 +437,7 @@ public class PublicKeyFactory
         AsymmetricKeyParameter getPublicKeyParameters(SubjectPublicKeyInfo keyInfo, Object defaultParams)
             throws IOException
         {
-            byte[] keyEnc = ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets();
+            byte[] keyEnc = Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets());
 
             if (Pack.bigEndianToInt(keyEnc, 0) == 1)
             {
@@ -801,7 +801,7 @@ public class PublicKeyFactory
         AsymmetricKeyParameter getPublicKeyParameters(SubjectPublicKeyInfo keyInfo, Object defaultParams)
             throws IOException
         {
-            byte[] keyEnc = ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets();
+            byte[] keyEnc = Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePublicKey()).getOctets());
 
             RainbowParameters rainbowParams = Utils.rainbowParamsLookup(keyInfo.getAlgorithm().getAlgorithm());
 

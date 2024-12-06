@@ -19,7 +19,7 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.util.Integers;
-
+import org.bouncycastle.util.Arrays;
 
 /**
  * @deprecated use org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils
@@ -35,7 +35,7 @@ public class X509ExtensionUtil
     {
         ASN1OctetString octs = (ASN1OctetString)ASN1Primitive.fromByteArray(encodedValue);
         
-        return ASN1Primitive.fromByteArray(octs.getOctets());
+        return ASN1Primitive.fromByteArray(Arrays.clone(octs.getOctets()));
     }
 
     /**
@@ -95,7 +95,7 @@ public class X509ExtensionUtil
                     list.add(ASN1ObjectIdentifier.getInstance(genName.getName()).getId());
                     break;
                 case GeneralName.iPAddress:
-                    list.add(DEROctetString.getInstance(genName.getName()).getOctets());
+                    list.add(Arrays.clone(DEROctetString.getInstance(genName.getName()).getOctets()));
                     break;
                 default:
                     throw new IOException("Bad tag number: " + genName.getTagNo());

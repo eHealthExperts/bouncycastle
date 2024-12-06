@@ -10,6 +10,7 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.pqc.legacy.math.linearalgebra.GF2Matrix;
+import org.bouncycastle.util.Arrays;
 
 public class McElieceCCA2PublicKey
     extends ASN1Object
@@ -33,7 +34,7 @@ public class McElieceCCA2PublicKey
 
         t = ((ASN1Integer)seq.getObjectAt(1)).intValueExact();
 
-        g = new GF2Matrix(((ASN1OctetString)seq.getObjectAt(2)).getOctets());
+        g = new GF2Matrix(Arrays.clone(((ASN1OctetString)seq.getObjectAt(2)).getOctets()));
 
         digest = AlgorithmIdentifier.getInstance(seq.getObjectAt(3));
     }

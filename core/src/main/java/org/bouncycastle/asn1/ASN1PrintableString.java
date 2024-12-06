@@ -39,7 +39,7 @@ public abstract class ASN1PrintableString
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets());
+            return createPrimitive(Arrays.clone(octetString.getOctets()));
         }
     };
 

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
 
 /**
@@ -17,7 +18,7 @@ public abstract class ASN1BitString
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets());
+            return createPrimitive(Arrays.clone(octetString.getOctets()));
         }
 
         ASN1Primitive fromImplicitConstructed(ASN1Sequence sequence)
@@ -414,5 +415,11 @@ public abstract class ASN1BitString
         }
 
         return new DERBitString(contents, false);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        EraseUtil.clearByteArray(contents);
     }
 }

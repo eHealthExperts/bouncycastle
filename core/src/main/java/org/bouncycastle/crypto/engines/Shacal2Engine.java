@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * Block cipher Shacal2, designed by Helena Handschuh and David Naccache,
@@ -214,5 +217,9 @@ public class Shacal2Engine
             out[pos++] = (byte)(block[i] >>> 8);
             out[pos++] = (byte)block[i];
         }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearIntArray(workingKey);
     }
 }

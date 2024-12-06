@@ -1,5 +1,6 @@
 package org.bouncycastle.tls.crypto.impl;
 
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.tls.crypto.*;
 
 import java.io.IOException;
@@ -17,7 +18,10 @@ public abstract class AbstractTlsCrypto
         {
             AbstractTlsSecret sec = (AbstractTlsSecret)secret;
 
-            return createSecret(sec.copyData());
+            byte[] copyData = sec.copyData();
+            TlsSecret ret = createSecret(copyData);
+            EraseUtil.clearByteArray(copyData);
+            return ret;
         }
 
         throw new IllegalArgumentException("unrecognized TlsSecret - cannot copy data: " + secret.getClass().getName());

@@ -19,6 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.oiw.OIWObjectIdentifiers;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.util.DefaultJcaJceHelper;
 import org.bouncycastle.jcajce.util.NamedJcaJceHelper;
 import org.bouncycastle.jcajce.util.ProviderJcaJceHelper;
@@ -156,7 +157,7 @@ public class JceAsymmetricKeyUnwrapper
                 {
                     keyCipher.init(Cipher.DECRYPT_MODE, privKey);
                 }
-                sKey = new SecretKeySpec(keyCipher.doFinal(encryptedKey), encryptedKeyAlgorithm.getAlgorithm().getId());
+                sKey = new DestroyableSecretKeySpec(keyCipher.doFinal(encryptedKey), encryptedKeyAlgorithm.getAlgorithm().getId());
             }
 
             return new JceGenericKey(encryptedKeyAlgorithm, sKey);

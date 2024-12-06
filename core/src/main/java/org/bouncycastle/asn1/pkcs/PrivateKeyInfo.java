@@ -18,6 +18,7 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.BigIntegers;
 
 /**
@@ -192,7 +193,7 @@ public class PrivateKeyInfo
 
     public ASN1OctetString getPrivateKey()
     {
-        return new DEROctetString(privateKey.getOctets());
+        return new DEROctetString(Arrays.clone(privateKey.getOctets()));
     }
 
     public int getPrivateKeyLength()
@@ -203,7 +204,7 @@ public class PrivateKeyInfo
     public ASN1Encodable parsePrivateKey()
         throws IOException
     {
-        return ASN1Primitive.fromByteArray(privateKey.getOctets());
+        return ASN1Primitive.fromByteArray(Arrays.clone(privateKey.getOctets());
     }
 
     /**

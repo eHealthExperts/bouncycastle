@@ -32,11 +32,13 @@ import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x9.X9ObjectIdentifiers;
 import org.bouncycastle.cms.CMSAlgorithm;
 import org.bouncycastle.cms.CMSException;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.util.AlgorithmParametersUtils;
 import org.bouncycastle.jcajce.util.AnnotatedPrivateKey;
 import org.bouncycastle.jcajce.util.JcaJceHelper;
 import org.bouncycastle.operator.GenericKey;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.util.Arrays;
 
 class CMSUtils
 {
@@ -138,7 +140,7 @@ class CMSUtils
 
         if (ext != null)
         {
-            return ASN1OctetString.getInstance(ASN1OctetString.getInstance(ext).getOctets()).getOctets();
+            return Arrays.clone(ASN1OctetString.getInstance(Arrays.clone(ASN1OctetString.getInstance(ext).getOctets())).getOctets());
         }
         else
         {
@@ -205,7 +207,7 @@ class CMSUtils
 
         if (key.getRepresentation() instanceof byte[])
         {
-            return new SecretKeySpec((byte[])key.getRepresentation(), "ENC");
+            return new DestroyableSecretKeySpec((byte[])key.getRepresentation(), "ENC");
         }
 
         throw new IllegalArgumentException("unknown generic key type");

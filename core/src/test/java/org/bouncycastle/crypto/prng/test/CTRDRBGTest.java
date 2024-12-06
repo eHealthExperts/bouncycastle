@@ -13,6 +13,8 @@ import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.test.SimpleTest;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * CTR DRBG Test
  */
@@ -521,6 +523,11 @@ public class CTRDRBGTest
         public void reset()
         {
             cipher.reset();
+        }
+
+        public void destroy() throws DestroyFailedException
+        {
+            cipher.destroy();
         }
     }
 

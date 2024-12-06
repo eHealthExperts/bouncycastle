@@ -41,6 +41,7 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.crypto.params.RC2Parameters;
 import org.bouncycastle.crypto.params.RC5Parameters;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.provider.symmetric.util.BCPBEKey;
 import org.bouncycastle.util.Strings;
 
@@ -510,7 +511,7 @@ public class BrokenJCEBlockCipher
 
         if (wrappedKeyType == Cipher.SECRET_KEY)
         {
-            return new SecretKeySpec(encoded, wrappedKeyAlgorithm);
+            return new DestroyableSecretKeySpec(encoded, wrappedKeyAlgorithm);
         }
         else
         {

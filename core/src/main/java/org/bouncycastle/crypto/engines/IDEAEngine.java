@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * A class that provides a basic International Data Encryption Algorithm (IDEA) engine.
@@ -362,5 +365,10 @@ public class IDEAEngine
         {
             return invertKey(expandKey(userKey));
         }
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(workingKey);
     }
 }

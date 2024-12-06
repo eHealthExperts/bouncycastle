@@ -1,6 +1,10 @@
 package org.bouncycastle.crypto.engines;
 
 
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
+
 /**
  * A class that provides CAST6 key encryption operations,
  * such as encoding data and generating keys.
@@ -291,6 +295,14 @@ public final class CAST6Engine extends CAST5Engine
         result[1] = B;
         result[2] = C;
         result[3] = D;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(_workingKey != null)
+        {
+            EraseUtil.clearIntArray(_workingKey);
+        }
     }
 
 }

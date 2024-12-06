@@ -45,7 +45,7 @@ public class OtherCertID
 
         if (seq.getObjectAt(0).toASN1Primitive() instanceof ASN1OctetString)
         {
-            otherCertHash = ASN1OctetString.getInstance(seq.getObjectAt(0));
+            otherCertHash = Arrays.clone(ASN1OctetString.getInstance(seq.getObjectAt(0)));
         }
         else
         {

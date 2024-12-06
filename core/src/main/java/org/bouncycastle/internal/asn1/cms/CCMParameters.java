@@ -56,7 +56,7 @@ public class CCMParameters
     private CCMParameters(
         ASN1Sequence seq)
     {
-        this.nonce = ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets();
+        this.nonce = Arrays.clone(ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets());
 
         if (seq.size() == 2)
         {

@@ -65,7 +65,7 @@ public class ESSCertID
 
     public byte[] getCertHash()
     {
-        return certHash.getOctets();
+        return Arrays.clone(certHash.getOctets());
     }
 
     public IssuerSerial getIssuerSerial()

@@ -125,6 +125,8 @@ public final class TlsBlockCipher
             offset += serverIVLength;
         }
 
+        Arrays.fill(key_block, (byte) 0x0);
+
         if (offset != key_block_size)
         {
             throw new TlsFatalAlert(AlertDescription.internal_error);
@@ -510,5 +512,18 @@ public final class TlsBlockCipher
         }
 
         return plaintextLength;
+    }
+
+    public void destroy() throws javax.security.auth.DestroyFailedException
+    {
+        if(decryptCipher != null)
+        {
+            decryptCipher.destroy();
+        }
+
+        if(encryptCipher != null)
+        {
+            encryptCipher.destroy();
+        }
     }
 }

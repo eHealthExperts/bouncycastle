@@ -6,6 +6,8 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * An implementation of the CBC mode for GOST 3412 2015 cipher.
  * See  <a href="https://www.tc26.ru/standard/gost/GOST_R_3413-2015.pdf">GOST R 3413 2015</a>
@@ -172,6 +174,13 @@ public class G3413CBCBlockCipher
         {
             System.arraycopy(R_init, 0, R, 0, R_init.length);
             cipher.reset();
+        }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
         }
     }
 }

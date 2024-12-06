@@ -7,8 +7,11 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * A class that provides Twofish encryption operations.
@@ -668,5 +671,10 @@ public final class TwofishEngine
                gSBox[ 0x001 + 2*(x & 0xff) ] ^
                gSBox[ 0x200 + 2*((x >>> 8) & 0xff) ] ^
                gSBox[ 0x201 + 2*((x >>> 16) & 0xff) ];
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearByteArray(workingKey);
     }
 }

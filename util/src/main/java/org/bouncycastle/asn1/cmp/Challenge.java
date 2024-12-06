@@ -1,5 +1,7 @@
 package org.bouncycastle.asn1.cmp;
 
+import org.bouncycastle.util.Arrays;
+
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Integer;
@@ -101,7 +103,7 @@ public class Challenge
 
     public byte[] getChallenge()
     {
-        return challenge.getOctets();
+        return Arrays.clone(challenge.getOctets());
     }
 
     /**

@@ -361,7 +361,7 @@ public class PublicKeyFactory
             int fieldSize = 32;
             int keySize = 2 * fieldSize;
 
-            byte[] keyEnc = key.getOctets();
+            byte[] keyEnc = Arrays.clone(key.getOctets());
             if (keyEnc.length != keySize)
             {
                 throw new IllegalArgumentException("invalid length for GOST3410_2001 public key");
@@ -414,7 +414,7 @@ public class PublicKeyFactory
             }
             int keySize = 2 * fieldSize;
 
-            byte[] keyEnc = key.getOctets();
+            byte[] keyEnc = Arrays.clone(key.getOctets());
             if (keyEnc.length != keySize)
             {
                 throw new IllegalArgumentException("invalid length for GOST3410_2012 public key");
