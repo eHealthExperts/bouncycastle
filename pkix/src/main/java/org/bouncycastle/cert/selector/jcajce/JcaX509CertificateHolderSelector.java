@@ -63,7 +63,7 @@ public class JcaX509CertificateHolderSelector
 
         if (ext != null)
         {
-            return ASN1OctetString.getInstance(ASN1OctetString.getInstance(ext).getOctets()).getOctets();
+            return Arrays.clone(ASN1OctetString.getInstance(Arrays.clone(ASN1OctetString.getInstance(ext).getOctets())).getOctets());
         }
         else
         {

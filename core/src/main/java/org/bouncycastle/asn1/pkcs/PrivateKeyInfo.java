@@ -204,7 +204,7 @@ public class PrivateKeyInfo
     public ASN1Encodable parsePrivateKey()
         throws IOException
     {
-        return ASN1Primitive.fromByteArray(Arrays.clone(privateKey.getOctets());
+        return ASN1Primitive.fromByteArray(Arrays.clone(privateKey.getOctets()));
     }
 
     /**

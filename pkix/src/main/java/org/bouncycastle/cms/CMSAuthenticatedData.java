@@ -101,7 +101,7 @@ public class CMSAuthenticatedData
         ContentInfo encInfo = authData.getEncapsulatedContentInfo();
         CMSReadable readable = new CMSProcessableByteArray(
             encInfo.getContentType(),
-            ASN1OctetString.getInstance(Arrays.clone(encInfo.getContent()).getOctets());
+                Arrays.clone(ASN1OctetString.getInstance(encInfo.getContent()).getOctets()));
 
         //
         // build the RecipientInformationStore

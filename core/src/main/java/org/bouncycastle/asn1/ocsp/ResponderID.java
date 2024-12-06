@@ -9,6 +9,7 @@ import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.util.Arrays;
 
 public class ResponderID
     extends ASN1Object

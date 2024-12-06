@@ -75,13 +75,13 @@ public class ECDSAPublicKey
                     setSecondCoefB(UnsignedInteger.getInstance(to).getValue());
                     break;
                 case 0x4:
-                    setBasePointG(Arrays.clone(ASN1OctetString.getInstance(to, false)));
+                    setBasePointG(ASN1OctetString.getInstance(to, false));
                     break;
                 case 0x5:
                     setOrderOfBasePointR(UnsignedInteger.getInstance(to).getValue());
                     break;
                 case 0x6:
-                    setPublicPointY(Arrays.clone(ASN1OctetString.getInstance(to, false)));
+                    setPublicPointY(ASN1OctetString.getInstance(to, false));
                     break;
                 case 0x7:
                     setCofactorF(UnsignedInteger.getInstance(to).getValue());

@@ -45,6 +45,6 @@ public class KeyTransRecipientInformation
     protected RecipientOperator getRecipientOperator(Recipient recipient)
         throws CMSException
     {
-        return ((KeyTransRecipient)recipient).getRecipientOperator(keyEncAlg, messageAlgorithm, Arrays.clone(info.getEncryptedKey().getOctets());
+        return ((KeyTransRecipient)recipient).getRecipientOperator(keyEncAlg, messageAlgorithm, Arrays.clone(info.getEncryptedKey().getOctets()));
     }
 }
