@@ -40,7 +40,8 @@ public class TlsDHUtils
         switch (namedGroup)
         {
         case NamedGroup.ffdhe2048:
-            return DHStandardGroups.rfc7919_ffdhe2048;
+            // RFC3526 DH Group 14
+            return DHStandardGroups.rfc3526_2048;
         case NamedGroup.ffdhe3072:
             return DHStandardGroups.rfc7919_ffdhe3072;
         case NamedGroup.ffdhe4096:
