@@ -11,6 +11,8 @@ import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implementation of DSTU7624 CCM mode
  */
@@ -511,4 +513,10 @@ public class KCCMBlockCipher
         }
     }
 
+    public void destroy() throws DestroyFailedException {
+        if(engine != null)
+        {
+            engine .destroy();
+        }
+    }
 }

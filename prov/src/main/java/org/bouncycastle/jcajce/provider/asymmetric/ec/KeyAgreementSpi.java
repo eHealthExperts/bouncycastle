@@ -1,12 +1,7 @@
 package org.bouncycastle.jcajce.provider.asymmetric.ec;
 
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
 import org.bouncycastle.asn1.x9.X9IntegerConverter;
@@ -28,6 +23,8 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.crypto.params.MQVPrivateParameters;
 import org.bouncycastle.crypto.params.MQVPublicParameters;
 import org.bouncycastle.crypto.util.DigestFactory;
+import org.bouncycastle.crypto.util.EraseUtil;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.jcajce.provider.asymmetric.util.BaseAgreementSpi;
 import org.bouncycastle.jcajce.spec.DHUParameterSpec;
 import org.bouncycastle.jcajce.spec.MQVParameterSpec;
@@ -37,6 +34,8 @@ import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.interfaces.MQVPrivateKey;
 import org.bouncycastle.jce.interfaces.MQVPublicKey;
 import org.bouncycastle.util.Arrays;
+
+import javax.crypto.SecretKey;
 
 /**
  * Diffie-Hellman key agreement using elliptic curve keys, ala IEEE P1363
@@ -278,6 +277,13 @@ public class KeyAgreementSpi
             ukmParameters = (parameterSpec instanceof UserKeyingMaterialSpec) ? ((UserKeyingMaterialSpec)parameterSpec).getUserKeyingMaterial() : null;
             ((BasicAgreement)agreement).init(privKey);
         }
+    }
+
+    @Override
+    protected SecretKey engineGenerateSecret(final String algorithm) throws NoSuchAlgorithmException {
+        SecretKey secretKey = super.engineGenerateSecret(algorithm);
+        EraseUtil.clearByteArray(this.result);
+        return secretKey;
     }
 
     private static String getSimpleName(Class clazz)

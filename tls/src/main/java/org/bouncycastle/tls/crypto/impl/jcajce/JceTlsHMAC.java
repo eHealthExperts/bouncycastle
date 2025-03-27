@@ -5,7 +5,9 @@ import java.security.InvalidKeyException;
 import javax.crypto.Mac;
 import javax.crypto.ShortBufferException;
 import javax.crypto.spec.SecretKeySpec;
+import javax.security.auth.DestroyFailedException;
 
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.tls.crypto.TlsCryptoUtils;
 import org.bouncycastle.tls.crypto.TlsHMAC;
 
@@ -18,6 +20,8 @@ public class JceTlsHMAC
     private final Mac hmac;
     private final String algorithm;
     private final int internalBlockSize;
+
+    private DestroyableSecretKeySpec secretKeySpec;
 
     /**
      * Base constructor.
@@ -37,7 +41,8 @@ public class JceTlsHMAC
     {
         try
         {
-            hmac.init(new SecretKeySpec(key, keyOff, keyLen, algorithm));
+            secretKeySpec =new DestroyableSecretKeySpec(key, keyOff, keyLen, algorithm);
+            hmac.init(secretKeySpec);
         }
         catch (InvalidKeyException e)
         {
@@ -52,7 +57,9 @@ public class JceTlsHMAC
 
     public byte[] calculateMAC()
     {
-        return hmac.doFinal();
+        byte[] mac = hmac.doFinal();
+        reset();
+        return mac;
     }
 
     public void calculateMAC(byte[] output, int outOff)
@@ -60,6 +67,7 @@ public class JceTlsHMAC
         try
         {
             hmac.doFinal(output, outOff);
+            reset();
         }
         catch (ShortBufferException e)
         {
@@ -79,6 +87,17 @@ public class JceTlsHMAC
 
     public void reset()
     {
+        if (secretKeySpec != null)
+        {
+            try
+            {
+                secretKeySpec.destroy();
+            }
+            catch (final DestroyFailedException e)
+            {
+                //ignore
+            }
+        }
         hmac.reset();
     }
 }

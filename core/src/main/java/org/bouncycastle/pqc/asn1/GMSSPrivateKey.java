@@ -16,6 +16,7 @@ import org.bouncycastle.pqc.legacy.crypto.gmss.GMSSParameters;
 import org.bouncycastle.pqc.legacy.crypto.gmss.GMSSRootCalc;
 import org.bouncycastle.pqc.legacy.crypto.gmss.GMSSRootSig;
 import org.bouncycastle.pqc.legacy.crypto.gmss.Treehash;
+import org.bouncycastle.util.Arrays;
 
 public class GMSSPrivateKey
     extends ASN1Object
@@ -51,7 +52,7 @@ public class GMSSPrivateKey
         byte[][] curSeeds = new byte[curSeedsPart.size()][];
         for (int i = 0; i < curSeeds.length; i++)
         {
-            curSeeds[i] = ((DEROctetString)curSeedsPart.getObjectAt(i)).getOctets();
+            curSeeds[i] = Arrays.clone(((DEROctetString)curSeedsPart.getObjectAt(i)).getOctets());
         }
 
         // --- Decode <nextNextSeeds>.
@@ -59,7 +60,7 @@ public class GMSSPrivateKey
         byte[][] nextNextSeeds = new byte[nextNextSeedsPart.size()][];
         for (int i = 0; i < nextNextSeeds.length; i++)
         {
-            nextNextSeeds[i] = ((DEROctetString)nextNextSeedsPart.getObjectAt(i)).getOctets();
+            nextNextSeeds[i] = Arrays.clone(((DEROctetString)nextNextSeedsPart.getObjectAt(i)).getOctets());
         }
 
         // --- Decode <curAuth>.
@@ -73,7 +74,7 @@ public class GMSSPrivateKey
             curAuth[i] = new byte[curAuthPart1.size()][];
             for (int j = 0; j < curAuth[i].length; j++)
             {
-                curAuth[i][j] = ((DEROctetString)curAuthPart1.getObjectAt(j)).getOctets();
+                curAuth[i][j] = Arrays.clone(((DEROctetString)curAuthPart1.getObjectAt(j)).getOctets());
             }
         }
 
@@ -88,7 +89,7 @@ public class GMSSPrivateKey
             nextAuth[i] = new byte[nextAuthPart1.size()][];
             for (int j = 0; j < nextAuth[i].length; j++)
             {
-                nextAuth[i][j] = ((DEROctetString)nextAuthPart1.getObjectAt(j)).getOctets();
+                nextAuth[i][j] = Arrays.clone(((DEROctetString)nextAuthPart1.getObjectAt(j)).getOctets());
             }
         }
 

@@ -29,6 +29,7 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.generators.HKDFBytesGenerator;
 import org.bouncycastle.crypto.params.HKDFParameters;
 import org.bouncycastle.jcajce.io.CipherOutputStream;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.operator.DefaultSecretKeySizeProvider;
 import org.bouncycastle.operator.GenericKey;
 import org.bouncycastle.operator.MacCaptureStream;
@@ -239,7 +240,7 @@ public class JceCMSContentEncryptorBuilder
 
             kdf.generateBytes(encKeyEncoded, 0, encKeyEncoded.length);
 
-            SecretKeySpec derivedKey = new SecretKeySpec(encKeyEncoded, encKey.getAlgorithm());
+            DestroyableSecretKeySpec derivedKey = new DestroyableSecretKeySpec(encKeyEncoded, encKey.getAlgorithm());
             try
             {
                 cipher.init(Cipher.ENCRYPT_MODE, derivedKey, params, random);

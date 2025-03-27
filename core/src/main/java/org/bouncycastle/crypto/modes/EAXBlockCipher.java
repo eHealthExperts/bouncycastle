@@ -11,6 +11,8 @@ import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * A Two-Pass Authenticated-Encryption Scheme Optimized for Simplicity and
  * Efficiency - by M. Bellare, P. Rogaway, D. Wagner.
@@ -383,5 +385,12 @@ public class EAXBlockCipher
         }
 
         return nonEqual == 0;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
     }
 }

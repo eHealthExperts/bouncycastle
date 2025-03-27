@@ -5,7 +5,10 @@ import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * Implementation of GOST 3412 2015 (aka "Kuznyechik") RFC 7801, GOST 3412
@@ -340,5 +343,15 @@ public class GOST3412_2015Engine
     public void reset()
     {
 
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(subKeys != null)
+        {
+            for (byte[] t : subKeys) {
+                EraseUtil.clearByteArray(t);
+            }
+        }
     }
 }

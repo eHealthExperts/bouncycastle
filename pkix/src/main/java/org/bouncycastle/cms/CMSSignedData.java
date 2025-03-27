@@ -35,6 +35,7 @@ import org.bouncycastle.operator.DigestAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.util.Encodable;
 import org.bouncycastle.util.Store;
+import org.bouncycastle.util.Arrays;
 
 /**
  * general class for handling a pkcs7-signature message.
@@ -202,7 +203,7 @@ public class CMSSignedData
             if (content instanceof ASN1OctetString)
             {
                 this.signedContent = new CMSProcessableByteArray(signedData.getEncapContentInfo().getContentType(),
-                    ((ASN1OctetString)content).getOctets());
+                    Arrays.clone(((ASN1OctetString)content).getOctets()));
             }
             else
             {

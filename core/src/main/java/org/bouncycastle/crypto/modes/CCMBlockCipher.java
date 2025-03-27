@@ -13,6 +13,8 @@ import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implements the Counter with Cipher Block Chaining mode (CCM) detailed in
  * NIST Special Publication 800-38C.
@@ -485,6 +487,13 @@ public class CCMBlockCipher
         public byte[] getBuffer()
         {
             return this.buf;
+        }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
         }
     }
 }

@@ -32,6 +32,7 @@ import org.bouncycastle.internal.asn1.misc.MiscObjectIdentifiers;
 import org.bouncycastle.internal.asn1.ntt.NTTObjectIdentifiers;
 import org.bouncycastle.internal.asn1.oiw.OIWObjectIdentifiers;
 import org.bouncycastle.jcajce.spec.HybridValueParameterSpec;
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Strings;
@@ -319,7 +320,7 @@ public abstract class BaseAgreementSpi
             DESParameters.setOddParity(secret);
         }
 
-        return new SecretKeySpec(secret, algName);
+        return new DestroyableSecretKeySpec(secret, algName);
     }
 
     private byte[] getSharedSecretBytes(byte[] secret, String oidAlgorithm, int keySize)

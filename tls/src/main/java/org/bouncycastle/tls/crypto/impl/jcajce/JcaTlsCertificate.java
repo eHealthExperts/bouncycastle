@@ -37,6 +37,7 @@ import org.bouncycastle.tls.crypto.TlsEncryptor;
 import org.bouncycastle.tls.crypto.TlsVerifier;
 import org.bouncycastle.tls.crypto.impl.LegacyTls13Verifier;
 import org.bouncycastle.tls.crypto.impl.RSAUtil;
+import org.bouncycastle.util.Arrays;
 
 /**
  * Implementation class for a single X.509 certificate based on the JCA.
@@ -294,7 +295,7 @@ public class JcaTlsCertificate
     public byte[] getExtension(ASN1ObjectIdentifier extensionOID) throws IOException
     {
         byte[] encoding = certificate.getExtensionValue(extensionOID.getId());
-        return encoding == null ? null : ((ASN1OctetString)ASN1Primitive.fromByteArray(encoding)).getOctets();
+        return encoding == null ? null : Arrays.clone(((ASN1OctetString)ASN1Primitive.fromByteArray(encoding)).getOctets());
     }
 
     public BigInteger getSerialNumber()

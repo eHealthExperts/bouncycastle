@@ -300,6 +300,6 @@ public class PrivateKeyFactory
 
     private static byte[] getRawKey(PrivateKeyInfo keyInfo) throws IOException
     {
-        return ASN1OctetString.getInstance(keyInfo.parsePrivateKey()).getOctets();
+        return Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePrivateKey()).getOctets());
     }
 }

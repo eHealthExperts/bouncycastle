@@ -7,7 +7,10 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * a class that provides a basic DES engine.
@@ -487,5 +490,10 @@ public class DESEngine
 
         Pack.intToBigEndian(right, out, outOff);
         Pack.intToBigEndian(left, out, outOff + 4);
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(workingKey);
     }
 }

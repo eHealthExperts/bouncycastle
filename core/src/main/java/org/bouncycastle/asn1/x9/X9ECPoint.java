@@ -51,7 +51,7 @@ public class X9ECPoint
     {
         if (p == null)
         {
-            p = c.decodePoint(encoding.getOctets()).normalize();
+            p = c.decodePoint(Arrays.clone(encoding.getOctets())).normalize();
         }
 
         return p;

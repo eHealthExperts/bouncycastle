@@ -43,7 +43,7 @@ public class MessageImprint
         if (seq.size() == 2)
         {
             this.hashAlgorithm = AlgorithmIdentifier.getInstance(seq.getObjectAt(0));
-            this.hashedMessage = ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets();
+            this.hashedMessage = Arrays.clone(ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets());
         }
         else
         {

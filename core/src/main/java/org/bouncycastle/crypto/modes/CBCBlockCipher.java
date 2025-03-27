@@ -7,6 +7,8 @@ import org.bouncycastle.crypto.DefaultMultiBlockCipher;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * implements Cipher-Block-Chaining (CBC) mode on top of a simple cipher.
  */
@@ -254,5 +256,12 @@ public class CBCBlockCipher
         cbcNextV = tmp;
 
         return length;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
     }
 }

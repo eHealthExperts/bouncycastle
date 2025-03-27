@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * an implementation of Rijndael, based on the documentation and reference implementation
@@ -725,5 +728,15 @@ public class RijndaelEngine
         // End with the extra key addition
         //
         KeyAddition(rk[0]);
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(workingKey != null)
+        {
+            for (long[] t : workingKey) {
+                EraseUtil.clearLongArray(t);
+            }
+        }
     }
 }

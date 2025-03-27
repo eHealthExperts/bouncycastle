@@ -250,7 +250,7 @@ abstract class X509CRLImpl
         {
             List<PublicKey> pubKeys = ((CompositePublicKey)key).getPublicKeys();
             ASN1Sequence keySeq = ASN1Sequence.getInstance(c.getSignatureAlgorithm().getParameters());
-            ASN1Sequence sigSeq = ASN1Sequence.getInstance(c.getSignature().getOctets());
+            ASN1Sequence sigSeq = ASN1Sequence.getInstance(Arrays.clone(c.getSignature().getOctets()));
 
             boolean success = false;
             for (int i = 0; i != pubKeys.size(); i++)
@@ -507,7 +507,7 @@ abstract class X509CRLImpl
 
     public byte[] getSignature()
     {
-        return c.getSignature().getOctets();
+        return Arrays.clone(c.getSignature().getOctets());
     }
 
     public String getSigAlgName()

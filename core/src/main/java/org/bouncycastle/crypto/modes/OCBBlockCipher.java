@@ -14,6 +14,8 @@ import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Bytes;
 import org.bouncycastle.util.Longs;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * An implementation of <a href="https://tools.ietf.org/html/rfc7253">RFC 7253 on The OCB
  * Authenticated-Encryption Algorithm</a>. For those still concerned about the original patents
@@ -591,5 +593,18 @@ public class OCBBlockCipher
     protected static void xor(byte[] block, byte[] val)
     {
         Bytes.xorTo(16, val, block);
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(hashCipher != null)
+        {
+            hashCipher.destroy();
+        }
+
+        if(mainCipher != null)
+        {
+            mainCipher.destroy();
+        }
     }
 }

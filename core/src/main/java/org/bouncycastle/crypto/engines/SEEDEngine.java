@@ -7,6 +7,9 @@ import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * Implementation of the SEED algorithm as described in RFC 4009
@@ -351,5 +354,10 @@ public class SEEDEngine
     private int phaseCalc2(int r0, int ki0, int r1, int ki1)
     {
         return G(phaseCalc1(r0, ki0, r1, ki1) + G((r0 ^ ki0) ^ (r1 ^ ki1)));
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(wKey);
     }
 }

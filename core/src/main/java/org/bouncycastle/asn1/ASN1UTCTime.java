@@ -157,7 +157,7 @@ public class ASN1UTCTime
         {
             throw new IllegalArgumentException("UTCTime string too short");
         }
-        this.contents = contents;
+        this.contents = Arrays.clone(contents);
         if (!(isDigit(0) && isDigit(1)))
         {
             throw new IllegalArgumentException("illegal characters in UTCTime string");

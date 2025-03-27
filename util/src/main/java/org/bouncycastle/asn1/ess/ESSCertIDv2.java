@@ -12,7 +12,8 @@ import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.IssuerSerial;
 import org.bouncycastle.util.Arrays;
 
-public class ESSCertIDv2
+public class
+ESSCertIDv2
     extends ASN1Object
 {
     private AlgorithmIdentifier hashAlgorithm;
@@ -55,7 +56,7 @@ public class ESSCertIDv2
             this.hashAlgorithm = AlgorithmIdentifier.getInstance(seq.getObjectAt(count++).toASN1Primitive());
         }
 
-        this.certHash = ASN1OctetString.getInstance(seq.getObjectAt(count++).toASN1Primitive()).getOctets();
+        this.certHash = Arrays.clone(ASN1OctetString.getInstance(seq.getObjectAt(count++).toASN1Primitive()).getOctets());
 
         if (seq.size() > count)
         {
@@ -143,7 +144,7 @@ public class ESSCertIDv2
             v.add(hashAlgorithm);
         }
 
-        v.add(new DEROctetString(certHash).toASN1Primitive());
+        v.add(new DEROctetString(getCertHash()).toASN1Primitive());
 
         if (issuerSerial != null)
         {

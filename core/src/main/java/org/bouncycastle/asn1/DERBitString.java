@@ -1,5 +1,7 @@
 package org.bouncycastle.asn1;
 
+import org.bouncycastle.util.Arrays;
+
 import java.io.IOException;
 
 /**
@@ -86,6 +88,6 @@ public class DERBitString
 
     static DERBitString fromOctetString(ASN1OctetString octetString)
     {
-        return new DERBitString(octetString.getOctets(), true);
+        return new DERBitString(Arrays.clone(octetString.getOctets()), true);
     }
 }

@@ -7,7 +7,10 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.security.auth.DestroyFailedException;
+import javax.security.auth.Destroyable;
 
+import org.bouncycastle.jcajce.provider.asymmetric.DestroyableSecretKeySpec;
 import org.bouncycastle.tls.crypto.impl.TlsBlockCipherImpl;
 
 /**
@@ -43,7 +46,7 @@ public class JceBlockCipherImpl
             throw new IllegalStateException();
         }
 
-        this.key = new SecretKeySpec(key, keyOff, keyLen, algorithm);
+        this.key = new DestroyableSecretKeySpec(key, keyOff, keyLen, algorithm);
     }
 
     public void init(byte[] iv, int ivOff, int ivLen)
@@ -89,5 +92,25 @@ public class JceBlockCipherImpl
     public int getBlockSize()
     {
         return cipher.getBlockSize();
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if (this.key != null)
+        {
+            try
+            {
+                this.key.destroy();
+            }
+            catch (final DestroyFailedException e)
+            {
+                //ignore
+            }
+        }
+
+        if(cipher instanceof Destroyable)
+        {
+            ((Destroyable) cipher).destroy();
+        }
     }
 }

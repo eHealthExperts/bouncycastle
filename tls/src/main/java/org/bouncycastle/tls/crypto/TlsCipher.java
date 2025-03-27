@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import org.bouncycastle.tls.ProtocolVersion;
 
-/**
+import javax.security.auth.Destroyable;
+
+    /**
  * Base interface for a TLS bulk cipher.
  */
-public interface TlsCipher
+public interface TlsCipher extends Destroyable
 {
     /**
      * Return the maximum input size for a ciphertext given a maximum output size for the plaintext

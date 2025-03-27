@@ -87,7 +87,7 @@ public class CMSDigestedData
 
         try
         {
-            return new CMSProcessableByteArray(content.getContentType(), ((ASN1OctetString)content.getContent()).getOctets());
+            return new CMSProcessableByteArray(content.getContentType(), Arrays.clone(((ASN1OctetString)content.getContent()).getOctets()));
         }
         catch (Exception e)
         {
@@ -122,7 +122,7 @@ public class CMSDigestedData
 
             OutputStream dOut = calc.getOutputStream();
 
-            dOut.write(((ASN1OctetString)content.getContent()).getOctets());
+            dOut.write(Arrays.clone(((ASN1OctetString)content.getContent()).getOctets()));
 
             return Arrays.areEqual(digestedData.getDigest(), calc.getDigest());
         }

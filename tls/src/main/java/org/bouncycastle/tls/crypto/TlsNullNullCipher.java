@@ -6,6 +6,8 @@ import org.bouncycastle.tls.AlertDescription;
 import org.bouncycastle.tls.ProtocolVersion;
 import org.bouncycastle.tls.TlsFatalAlert;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * The cipher for TLS_NULL_WITH_NULL_NULL.
  */
@@ -66,5 +68,8 @@ public class TlsNullNullCipher
     public boolean usesOpaqueRecordTypeEncode()
     {
         return false;
+    }
+
+    public void destroy() throws DestroyFailedException {
     }
 }

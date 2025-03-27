@@ -1,10 +1,12 @@
 package org.bouncycastle.crypto;
 
 
+import javax.security.auth.Destroyable;
+
 /**
  * Block cipher engines are expected to conform to this interface.
  */
-public interface BlockCipher
+public interface BlockCipher extends Destroyable
 {
     /**
      * Initialise the cipher.

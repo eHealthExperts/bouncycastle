@@ -52,8 +52,8 @@ public class X9Curve
         if (fieldIdentifier.equals(prime_field))
         {   
             BigInteger p = ((ASN1Integer)fieldID.getParameters()).getValue();
-            BigInteger A = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets());      
-            BigInteger B = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets());      
+            BigInteger A = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets());
+            BigInteger B = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets());
             curve = new ECCurve.Fp(p, A, B, order, cofactor);
         }
         else if (fieldIdentifier.equals(characteristic_two_field))
@@ -84,8 +84,8 @@ public class X9Curve
             {
                 throw new IllegalArgumentException("This type of EC basis is not implemented");
             }   
-            BigInteger A = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets());      
-            BigInteger B = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets());      
+            BigInteger A = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(0)).getOctets());
+            BigInteger B = new BigInteger(1, ASN1OctetString.getInstance(seq.getObjectAt(1)).getOctets());
             curve = new ECCurve.F2m(m, k1, k2, k3, A, B, order, cofactor);
         }   
         else

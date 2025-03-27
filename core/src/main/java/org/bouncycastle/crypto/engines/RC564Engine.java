@@ -5,6 +5,9 @@ import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.RC5Parameters;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * The specification for RC5 came from the <code>RC5 Encryption Algorithm</code>
@@ -287,5 +290,9 @@ public class RC564Engine
             dst[i + dstOff] = (byte)word;
             word >>>= 8;
         }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearLongArray(_S);
     }
 }

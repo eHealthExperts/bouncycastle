@@ -1,15 +1,13 @@
 package org.bouncycastle.crypto.engines;
 
-import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.CryptoServicesRegistrar;
-import org.bouncycastle.crypto.DataLengthException;
-import org.bouncycastle.crypto.DefaultMultiBlockCipher;
-import org.bouncycastle.crypto.MultiBlockCipher;
-import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * an implementation of the AES (Rijndael), from FIPS-197.
@@ -454,7 +452,13 @@ private static final int[] Tinv0 =
     {
         if (params instanceof KeyParameter)
         {
-            WorkingKey = generateWorkingKey(((KeyParameter)params).getKey(), forEncryption);
+            KeyParameter keyParameter = (KeyParameter)params;
+            WorkingKey = generateWorkingKey(keyParameter.getKey(), forEncryption);
+            try {
+                keyParameter.destroy();
+            } catch (DestroyFailedException e) {
+                //ignore
+            }
             this.forEncryption = forEncryption;
             if (forEncryption)
             {
@@ -607,5 +611,15 @@ private static final int[] Tinv0 =
             return 256;
         }
         return (WorkingKey.length - 7) << 5;
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(WorkingKey != null)
+        {
+            for (int[] t : WorkingKey) {
+                EraseUtil.clearIntArray(t);
+            }
+        }
     }
 }

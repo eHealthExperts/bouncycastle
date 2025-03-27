@@ -154,7 +154,7 @@ public class PrivateKeyFactory
         }
         else if (algOID.equals(PKCSObjectIdentifiers.id_alg_hss_lms_hashsig))
         {
-            byte[] keyEnc = ASN1OctetString.getInstance(keyInfo.parsePrivateKey()).getOctets();
+            byte[] keyEnc = Arrays.clone(ASN1OctetString.getInstance(keyInfo.parsePrivateKey()).getOctets());
             ASN1BitString pubKey = keyInfo.getPublicKeyData();
 
             if (Pack.bigEndianToInt(keyEnc, 0) == 1)
@@ -323,7 +323,7 @@ public class PrivateKeyFactory
             }
             else if (keyObj instanceof DEROctetString)
             {
-                byte[] data = ASN1OctetString.getInstance(keyObj).getOctets();
+                byte[] data = Arrays.clone(ASN1OctetString.getInstance(keyObj).getOctets());
                 if (keyInfo.getPublicKeyData() != null)
                 {
                     MLDSAPublicKeyParameters pubParams = PublicKeyFactory.MLDSAConverter.getPublicKeyParams(spParams, keyInfo.getPublicKeyData());
@@ -379,7 +379,7 @@ public class PrivateKeyFactory
             }
             else if (keyObj instanceof DEROctetString)
             {
-                byte[] data = ASN1OctetString.getInstance(keyObj).getOctets();
+                byte[] data = Arrays.clone(ASN1OctetString.getInstance(keyObj).getOctets());
                 if (keyInfo.getPublicKeyData() != null)
                 {
                     DilithiumPublicKeyParameters pubParams = PublicKeyFactory.DilithiumConverter.getPublicKeyParams(dilParams, keyInfo.getPublicKeyData());

@@ -376,7 +376,7 @@ public class Extension
     {
         try
         {
-            return ASN1Primitive.fromByteArray(ext.getExtnValue().getOctets());
+            return ASN1Primitive.fromByteArray(Arrays.clone(ext.getExtnValue().getOctets()));
         }
         catch (IOException e)
         {

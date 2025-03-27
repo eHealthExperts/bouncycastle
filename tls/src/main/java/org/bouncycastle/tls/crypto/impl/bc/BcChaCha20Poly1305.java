@@ -13,6 +13,8 @@ import org.bouncycastle.tls.crypto.impl.TlsAEADCipherImpl;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
 
+import javax.security.auth.DestroyFailedException;
+
 public class BcChaCha20Poly1305 implements TlsAEADCipherImpl
 {
     private static final byte[] ZEROES = new byte[15];
@@ -127,5 +129,9 @@ public class BcChaCha20Poly1305 implements TlsAEADCipherImpl
         {
             mac.update(ZEROES, 0, 16 - partial);
         }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        cipher.destroy();
     }
 }

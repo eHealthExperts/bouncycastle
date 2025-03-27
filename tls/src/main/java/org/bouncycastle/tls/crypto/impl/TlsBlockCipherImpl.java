@@ -1,11 +1,12 @@
 package org.bouncycastle.tls.crypto.impl;
 
+import javax.security.auth.Destroyable;
 import java.io.IOException;
 
 /**
  * Interface for block cipher services.
  */
-public interface TlsBlockCipherImpl
+public interface TlsBlockCipherImpl extends Destroyable
 {
     /**
      * Set the key to be used by the block cipher implementation supporting this service.

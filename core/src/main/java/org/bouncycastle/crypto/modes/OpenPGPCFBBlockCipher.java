@@ -5,6 +5,8 @@ import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implements OpenPGP's rather strange version of Cipher-FeedBack (CFB) mode
  * on top of a simple cipher. This class assumes the IV has been prepended
@@ -307,5 +309,12 @@ public class OpenPGPCFBBlockCipher
         }
         
         return blockSize;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
     }
 }

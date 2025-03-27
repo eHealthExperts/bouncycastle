@@ -4,6 +4,9 @@ import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.RC2Parameters;
+import org.bouncycastle.crypto.util.EraseUtil;
+
+import javax.security.auth.DestroyFailedException;
 
 /**
  * an implementation of RC2 as described in RFC 2268
@@ -313,5 +316,9 @@ public class RC2Engine
         out[outOff + 5] = (byte)(x54 >> 8);
         out[outOff + 6] = (byte)x76;
         out[outOff + 7] = (byte)(x76 >> 8);
+    }
+
+    public void destroy() throws DestroyFailedException {
+        EraseUtil.clearIntArray(workingKey);
     }
 }

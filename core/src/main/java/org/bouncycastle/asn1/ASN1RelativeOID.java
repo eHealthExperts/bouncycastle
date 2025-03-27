@@ -15,7 +15,7 @@ public class ASN1RelativeOID
     {
         ASN1Primitive fromImplicitPrimitive(DEROctetString octetString)
         {
-            return createPrimitive(octetString.getOctets(), false);
+            return createPrimitive(Arrays.clone(octetString.getOctets()), false);
         }
     };
 

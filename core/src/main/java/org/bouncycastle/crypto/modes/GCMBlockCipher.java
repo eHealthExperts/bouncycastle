@@ -16,6 +16,8 @@ import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implements the Galois/Counter mode (GCM) detailed in
  * NIST Special Publication 800-38D.
@@ -179,23 +181,14 @@ public class GCMBlockCipher
                 {
                     throw new IllegalArgumentException("cannot reuse nonce for GCM encryption");
                 }
-                if (lastKey != null && Arrays.areEqual(lastKey, keyParam.getKey()))
-                {
-                    throw new IllegalArgumentException("cannot reuse nonce for GCM encryption");
-                }
             }
         }
 
         nonce = newNonce;
-        if (keyParam != null)
-        {
-            lastKey = keyParam.getKey();
-        }
 
         // TODO Restrict macSize to 16 if nonce length not 12?
 
         // Cipher always used in forward mode
-        // if keyParam is null we're reusing the last key.
         if (keyParam != null)
         {
             cipher.init(true, keyParam);
@@ -747,6 +740,13 @@ public class GCMBlockCipher
                 throw new IllegalStateException("GCM cipher cannot be reused for encryption");
             }
             throw new IllegalStateException("GCM cipher needs to be initialised");
+        }
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
         }
     }
 }

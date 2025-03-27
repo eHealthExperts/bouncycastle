@@ -1,18 +1,16 @@
 package org.bouncycastle.crypto.engines;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
-import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.CryptoServicesRegistrar;
-import org.bouncycastle.crypto.DataLengthException;
-import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithSBox;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Strings;
+
+import javax.security.auth.DestroyFailedException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * implementation of GOST 28147-89
@@ -403,5 +401,10 @@ public class GOST28147Engine
         }
 
         throw new IllegalArgumentException("SBOX provided did not map to a known one");
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        EraseUtil.clearIntArray(workingKey);
     }
 }

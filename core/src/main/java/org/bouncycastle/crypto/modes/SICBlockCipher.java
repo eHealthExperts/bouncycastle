@@ -9,6 +9,8 @@ import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implements the Segmented Integer Counter (SIC) mode on top of a simple
  * block cipher. This mode is also known as CTR mode.
@@ -375,5 +377,12 @@ public class SICBlockCipher
         }
 
         return Pack.bigEndianToLong(res, res.length - 8) * blockSize + byteCount;
+    }
+
+    public void destroy() throws DestroyFailedException {
+        if(cipher != null)
+        {
+            cipher.destroy();
+        }
     }
 }

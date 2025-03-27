@@ -15,6 +15,8 @@ import org.bouncycastle.tls.crypto.TlsEncodeResult;
 import org.bouncycastle.tls.crypto.TlsHMAC;
 import org.bouncycastle.util.Arrays;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * The NULL cipher.
  */
@@ -185,5 +187,8 @@ public final class TlsNullCipher
     public boolean usesOpaqueRecordTypeEncode()
     {
         return encryptUseInnerPlaintext;
+    }
+
+    public void destroy() throws DestroyFailedException {
     }
 }

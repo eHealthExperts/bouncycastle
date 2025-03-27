@@ -14,6 +14,7 @@ import javax.crypto.interfaces.PBEKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.RC2ParameterSpec;
+import javax.security.auth.DestroyFailedException;
 
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.Mac;
@@ -23,6 +24,7 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.crypto.params.RC2Parameters;
 import org.bouncycastle.crypto.params.SkeinParameters;
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.jcajce.PKCS12Key;
 import org.bouncycastle.jcajce.spec.AEADParameterSpec;
 import org.bouncycastle.jcajce.spec.SkeinParameterSpec;
@@ -162,7 +164,9 @@ public class BaseMac
             {
                 throw new InvalidAlgorithmParameterException("inappropriate parameter type: " + params.getClass().getName());
             }
-            param = new KeyParameter(key.getEncoded());
+            byte[] encoded = key.getEncoded();
+            param = new KeyParameter(encoded);
+            EraseUtil.clearByteArray(encoded);
         }
 
         final KeyParameter keyParam;
@@ -195,7 +199,16 @@ public class BaseMac
         }
         else if (params == null)
         {
-            param = new KeyParameter(key.getEncoded());
+            byte[] encoded = key.getEncoded();
+            if (param instanceof KeyParameter) {
+                try {
+                    ((KeyParameter)param).destroy();
+                }  catch (DestroyFailedException e) {
+                   // TODO: logging
+                }
+            }
+            param = new KeyParameter(encoded);
+            EraseUtil.clearByteArray(encoded);
         }
         else if (GcmSpecUtil.isGcmSpec(params))
         {

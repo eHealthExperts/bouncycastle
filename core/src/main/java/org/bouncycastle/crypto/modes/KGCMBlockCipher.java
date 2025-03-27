@@ -18,6 +18,8 @@ import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
 
+import javax.security.auth.DestroyFailedException;
+
 /**
  * Implementation of DSTU7624 GCM mode
  */
@@ -367,6 +369,19 @@ public class KGCMBlockCipher
         public byte[] getBuffer()
         {
             return this.buf;
+        }
+    }
+
+    public void destroy() throws DestroyFailedException
+    {
+        if(engine != null)
+        {
+            engine.destroy();
+        }
+
+        if(ctrEngine != null)
+        {
+            ctrEngine.destroy();
         }
     }
 }

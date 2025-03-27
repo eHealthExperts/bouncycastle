@@ -132,7 +132,7 @@ public class X509CertificateHolderSelector
                     return Arrays.areEqual(subjectKeyId, MSOutlookKeyIdCalculator.calculateKeyId(certHldr.getSubjectPublicKeyInfo()));
                 }
 
-                byte[] subKeyID = ASN1OctetString.getInstance(ext.getParsedValue()).getOctets();
+                byte[] subKeyID = Arrays.clone(ASN1OctetString.getInstance(ext.getParsedValue()).getOctets());
 
                 return Arrays.areEqual(subjectKeyId, subKeyID);
             }

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.bouncycastle.crypto.util.EraseUtil;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Strings;
 import org.bouncycastle.util.encoders.Hex;
@@ -242,12 +243,12 @@ public abstract class ASN1OctetString
 
     ASN1Primitive toDERObject()
     {
-        return new DEROctetString(string);
+        return new DEROctetString(Arrays.clone(string));
     }
 
     ASN1Primitive toDLObject()
     {
-        return new DEROctetString(string);
+        return new DEROctetString(Arrays.clone(string));
     }
 
     public String toString()
@@ -258,5 +259,11 @@ public abstract class ASN1OctetString
     static ASN1OctetString createPrimitive(byte[] contents)
     {
         return new DEROctetString(contents);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        EraseUtil.clearByteArray(string);
     }
 }
