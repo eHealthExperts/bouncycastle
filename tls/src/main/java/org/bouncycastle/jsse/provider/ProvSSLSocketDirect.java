@@ -37,6 +37,9 @@ class ProvSSLSocketDirect
 {
     private static final Logger LOG = Logger.getLogger(ProvSSLSocketDirect.class.getName());
 
+    protected static final boolean provAllowReverseLookupForOriginalHostNameResolution = PropertyUtils
+      .getBooleanSystemProperty("org.bouncycastle.jsse.client.allowReverseLookupForOriginalHostNameResolution", false);
+
     protected final AppDataInput appDataIn = new AppDataInput();
     protected final AppDataOutput appDataOut = new AppDataOutput();
 
@@ -558,7 +561,12 @@ class ProvSSLSocketDirect
 
         if (useClientMode && provAssumeOriginalHostName)
         {
-            String originalHostName = peerAddress.getHostName();
+            // If peerAddress has no associated hostname (detected via a toString() return value with an empty hostname, i.e. starting with '/')
+            // and if Reverse DNS Lookup is not allowed, use the IP Address for peerHost and peerHostSNI.
+            // (InetAddress.getHostName() triggers a Reverse DNS Lookup if no hostname is associated, InetAddress.toString() never does,
+            // see https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/InetAddress.html)
+            boolean useAddressForPeerHost = !provAllowReverseLookupForOriginalHostNameResolution && peerAddress.toString().startsWith("/");
+            String originalHostName = useAddressForPeerHost ? peerAddress.getHostAddress() : peerAddress.getHostName();
 
             this.peerHost = originalHostName;
             this.peerHostSNI = originalHostName;
