@@ -99,7 +99,7 @@ class ProvSSLSessionContext
     {
         processQueue();
 
-        if (!addToCache || sessionCacheSize > 0)
+        if (!addToCache)
         {
             tlsSession.invalidate();
             return new ProvSSLSession(this, peerHost, peerPort, tlsSession, jsseSessionParameters);
