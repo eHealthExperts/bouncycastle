@@ -1000,8 +1000,9 @@ public class PKCS12KeyStoreSpi
                 else if (c[i].getContentType().equals(encryptedData))
                 {
                     EncryptedData d = EncryptedData.getInstance(c[i].getContent());
+                    final ASN1OctetString contentOs = d.getContent();
                     byte[] octets = cryptData(false, d.getEncryptionAlgorithm(),
-                        password, wrongPKCS12Zero, d.getContent().getOctets());
+                        password, wrongPKCS12Zero, contentOs.getOctets());
                     ASN1Sequence seq = ASN1Sequence.getInstance(octets);
 
                     noEnc = false;
